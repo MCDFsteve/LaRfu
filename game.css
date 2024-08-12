@@ -1,0 +1,319 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* 防止滚动条出现 */
+    width: 100%;
+    font-family: 'Score','zhCN';
+    height: 100%; /* 这将覆盖整个视窗 */
+    display: flex;
+    align-items: flex-start; /* 不居中，防止干扰绝对定位 */
+    justify-content: space-between;
+    position: relative; /* 为绝对定位提供参考 */
+}
+.button {
+    height: 15px; /* 按钮高度 */
+    width: 50%; /* 按钮宽度 */
+    border-radius: 10px;
+    opacity: 1; /* 初始不透明度 */
+    transition: opacity 0.3s;
+    backdrop-filter: blur(15px);
+    display: flex;
+    position: absolute; /* 绝对定位 */
+    top: calc(80% - 2.5px); /* 减去自身高度的一半，确保中心在80%处 */
+    left:50%;
+    transform: translateY( -50%); /* 修正居中位置 */
+    border: none; /* 去除边框 */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    z-index:-1;
+}
+.red {
+    background-color: rgba(245, 94, 114,0.6); /* 红色背景 */
+    left: 0; /* 左侧按钮放置在左边 */
+}
+.blue {
+    background-color: rgba(82, 168, 205,0.6); /* 蓝色背景 */
+    right: 0; /* 右侧按钮放置在右边 */
+}
+#audioPlayer {
+    position: fixed; /* 使用固定定位 */
+    top: 50%; /* 垂直居中 */
+    left: 50%; /* 水平居中 */
+    transform: translate(-50%, -50%); /* 修正居中位置 */
+    min-width: 100%; /* 最小宽度为100% */
+    min-height: 100%; /* 最小高度为100% */
+    width: auto; /* 宽度自动 */
+    height: auto; /* 高度自动 */
+    z-index: -3; /* 确保视频在内容后面 */
+    background-size: cover; /* 覆盖背景大小 */
+}
+
+.button.dim {
+    opacity: 0.5; /* 按钮触发后变暗 */
+}
+.button:focus {
+    outline: none;  /* 移除聚焦时的轮廓 */
+    box-shadow: none;  /* 如果有设置阴影作为聚焦效果也一并移除 */
+}
+
+#progressContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ccc;
+    height: 5px;
+}
+#timeDisplay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: rgb(0, 0, 0);
+    text-shadow: 1px 1px 0 #ccc;
+    font-size: 25px; 
+}
+#progressBar {
+    height: 100%;
+    background-color: #007bff;
+    width: 0%;
+}
+.circle {
+    position: absolute;
+    width: 50px; /* 圆圈的尺寸 */
+    height: 50px;
+    border-radius: 50%;
+    background-color: red; /* 可以根据需要调整颜色 */
+    transition: top 0.8s linear; /* 动画效果 */
+}
+@keyframes drop {
+    0% { top: 0; }
+    100% { top: 80%; } /* 调整为实际高度的 80% */
+}
+#buttonsContainer {
+    display: flex;  /* 使用 Flexbox 布局 */
+    position: absolute;
+    top: 2vh;
+    left: 2vh;
+    align-items: center;  /* 垂直居中对齐子元素 */
+}
+.playPauseControl {
+    width: 3.5vw;
+    height: 3.5vw;
+    padding:5px;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(15px);
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 1011;
+    border: none;
+    margin-right: 10px;  /* 在两个按钮之间添加间隔 */
+    transition: padding 0.3s; 
+}
+.playPauseControl:hover {
+    width: 45px;
+    height: 45px;
+    padding:0px;
+    transition: padding 0.3s; 
+}
+.icon {
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    justify-content: center;
+    align-items: center;
+    object-fit: cover;  /* 确保图像填满整个容器而不失真 */
+    transition: opacity 0.5s ease;
+}
+.icon:hover {
+    opacity: 1.0;
+    transition: opacity 0.5s ease;
+}
+.controlButton {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 10px;
+    left: 70px; /* 根据暂停按钮的位置和宽度调整，使其位于右侧 */
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 1011; /* 确保按钮不被其他元素遮挡 */
+    border: none; /* 移除默认边框 */
+    color: black; /* 设置文字颜色 */
+    font-size: 14px; /* 调整字体大小 */
+}
+
+@keyframes unfoldOverlay {
+    from {
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+    to {
+        width: 100vw;
+        height: 100vh;
+        opacity: 1;
+    }
+}
+@keyframes foldOverlay {
+    from {
+        width: 100vw;
+        height: 100vh;
+        opacity: 1;
+    }
+    to {
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+}
+#over {
+    position: fixed;
+    /*backdrop-filter: blur(100px);*/
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);  
+    z-index: -2;  
+    pointer-events: none;  
+    animation-name: unfoldOverlay;
+    animation-duration: 0.1s;  /* 动画时长，可以根据需要调整 */
+    animation-fill-mode: forwards;  /* 保持动画结束时的状态 */
+}
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);  
+    z-index: 1010;  
+    pointer-events: none;  
+    animation-name: unfoldOverlay;
+    animation-duration: 0.1s;  /* 动画时长，可以根据需要调整 */
+    animation-fill-mode: forwards;  /* 保持动画结束时的状态 */
+}
+#overlay.active {
+    animation-name: unfoldOverlay;
+    animation-duration: 0.1s;
+    animation-fill-mode: forwards;
+}
+#overlay.inactive {
+    animation-name: foldOverlay;
+    animation-duration: 0.1s;
+    animation-fill-mode: forwards;
+}
+img{
+    opacity: 0.5;
+}
+#fpsDisplay {
+    position: absolute;
+    left: 2vh;
+    top: 11vh;
+    color: white;
+    font-size: 3vw;
+    z-index: 997;
+    text-shadow:
+        -1px -1px 1px black,
+        1px -1px 1px black,
+        -1px 1px 1px black,
+        1px 1px 1px black,
+        -2px -2px 1px black,
+        2px -2px 1px black,
+        -2px 2px 1px black,
+        2px 2px 1px black,
+        2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+#countdownDisplay,.loading {
+    color: white;
+    font-size: 5vw;
+    text-shadow:
+        -1px -1px 1px black,
+        1px -1px 1px black,
+        -1px 1px 1px black,
+        1px 1px 1px black,
+        -2px -2px 1px black,
+        2px -2px 1px black,
+        -2px 2px 1px black,
+        2px 2px 1px black,
+        2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+#songTitle {
+    position: absolute;
+    bottom: 1vw;
+    left: 0;
+    color: white;
+    font-size: 1vw;
+    z-index: 997;
+    text-shadow:
+        -1px -1px 1px black,
+        1px -1px 1px black,
+        -1px 1px 1px black,
+        1px 1px 1px black,
+        -2px -2px 1px black,
+        2px -2px 1px black,
+        -2px 2px 1px black,
+        2px 2px 1px black,
+        2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+#scoreDisplay {
+    position: absolute;
+    z-index: 997;
+    right: 2vh;
+    top: 2vh;
+    color: rgb(255, 255, 255);
+    text-align: right;
+    text-shadow:
+        -1px -1px 1px black,
+        1px -1px 1px black,
+        -1px 1px 1px black,
+        1px 1px 1px black,
+        -2px -2px 1px black,
+        2px -2px 1px black,
+        -2px 2px 1px black,
+        2px 2px 1px black,
+        2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+#scoreDisplay .totalScore {
+    font-size: 5vw; /* 更大的字号 */
+}
+
+#scoreDisplay .percentage {
+    font-size: 3vw; /* 默认字号 */
+}
+#rectangleContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.2;
+    transition: opacity 0.2s ease-in-out; 
+    z-index: -1;
+    pointer-events: none; /* 确保容器不会阻挡鼠标事件 */
+}
+
+.rectangle {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    position: absolute;
+    width: 100%;
+    height: 5px; /* 初始高度 */
+    background-color: transparent; /* 初始背景色 */
+}
+.red-rectangle {
+    background-color: rgb(218, 197, 104); /* 红色 */
+}
+.red-rectangle2 {
+    background-color: rgb(33, 52, 104); /* 红色 */
+}
+.blue-rectangle {
+    background-color: rgb(255, 59, 59); /* 蓝色 */
+}
+.blue-rectangle2 {
+    background-color: rgb(92, 92, 194); /* 蓝色 */
+}

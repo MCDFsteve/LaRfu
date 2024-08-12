@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaRfu</title>
+    <link rel="stylesheet" href="./fonts.css">
+    <link rel="stylesheet" href="./selectmusic.css">
+    <style>
+    </style>
+</head>
+
+<body>
+    <div id="back"></div>
+    <div id="black"></div>
+    <div class="container">
+        <div class="list">
+        </div>
+        <div class="main-view" id="right-center">
+            <img id="viewmain" src="sources/images/icon.png" alt="Selected Gun" style="pointer-events: none;">
+        </div>
+        <div id="scorea" class="score"><span class="score2">Best Score </span><br>1919810</div>
+        <div id="songtitlea" class="score">
+            <div id="scrollCanvasContainer">
+                <canvas id="scrollCanvas"></canvas>
+            </div>
+        </div>
+        <div class="center-line"></div>
+        <div class="rectangle">
+            <div class="left-border"></div>
+            <div class="right-border"></div>
+        </div>
+        <div class="rectangle2">
+            <div class="left-border2"></div>
+            <div class="right-border2"></div>
+        </div>
+        <div id="backfull"
+            style="height:100%;width:100%;z-index:5;background-color: #000000;position: fixed;transition: opacity 0.2s ease-in-out;pointer-events: none; ">
+        </div>
+    </div>
+    <script>
+        document.addEventListener('mousemove', (event) => {
+            const viewmain = document.getElementById('viewmain');
+            const viewmainRect = viewmain.getBoundingClientRect();
+
+            // 获取鼠标的当前坐标
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
+            // 判断鼠标是否在矩形范围内
+            if (
+                mouseX >= viewmainRect.left &&
+                mouseX <= viewmainRect.right &&
+                mouseY >= viewmainRect.top &&
+                mouseY <= viewmainRect.bottom
+            ) {
+                // 鼠标在矩形范围内，放大元素
+                viewmain.style.transform = 'scale(1.05)';
+            } else {
+                // 鼠标移出矩形范围，恢复元素大小
+                viewmain.style.transform = 'scale(1.0)';
+            }
+
+            // 为元素添加平滑过渡效果
+            viewmain.style.transition = 'transform 0.1s ease-in-out';
+        });
+        setInterval(() => {
+            const backfull = document.getElementById('backfull');
+            backfull.style.opacity = 0;
+        }, 1000);
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const text = 'EGOIST - 名前のない怪物'; // 可以动态设置为任意音乐名
+            initializeScrollAnimation(text);
+            updateDimensions();
+        });
+
+        window.addEventListener('load', function () {
+            initializeScrollAnimation(text);
+            updateDimensions();
+        });
+
+        window.addEventListener('resize', function () {
+            initializeScrollAnimation(text);
+            updateDimensions();
+        });
+
+        function updateDimensions() {
+            const scorea = document.getElementById('scorea');
+            const songtitlea = document.getElementById('songtitlea');
+            const viewmain = document.getElementById('viewmain');
+            const viewmainRect = viewmain.getBoundingClientRect();
+            scorea.style.left = `calc(${viewmainRect.x}px)`;
+            scorea.style.zIndex = 0;
+            scorea.style.top = `calc(${viewmainRect.bottom}px + 2%)`;
+            scorea.style.width = `calc(${viewmainRect.width}px)`;
+            songtitlea.style.left = `calc(${viewmainRect.x}px)`;
+            songtitlea.style.zIndex = 0;
+            songtitlea.style.top = `calc(${viewmainRect.top}px - 2% - 6vh)`;
+            songtitlea.style.width = `calc(${viewmainRect.width}px)`;
+            //document.getElementById('scrollCanvas').style.border = '1px solid red';
+        }
+
+        function initializeScrollAnimation(text) {
+            const canvas = document.getElementById('scrollCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // 获取视口宽度和实际高度
+            const viewWidth = document.getElementById('viewmain').getBoundingClientRect().width;
+            const viewHeight = 50;
+
+            // 设置 canvas 为高分辨率
+            const scale = window.devicePixelRatio || 1;
+            canvas.width = viewWidth * scale;
+            canvas.height = viewHeight * scale;
+
+            // 将画布缩放回视口大小
+            canvas.style.width = `${viewWidth}px`;
+            canvas.style.height = `${viewHeight * 1.1}px`;
+
+            ctx.scale(scale, scale);
+
+            const fontSize = window.innerHeight * 0.05; // 字体大小为5vh
+            ctx.font = `${fontSize}px 'Orbitron', 'zhCN', sans-serif`;
+
+            let textWidth = ctx.measureText(text).width;
+            let x = 0; // 文本起始位置在画布右侧
+
+            scrollText();
+
+            function scrollText() {
+                ctx.clearRect(0, 0, canvas.width / scale, canvas.height / scale); // 清除画布
+                ctx.fillStyle = 'white'; // 文本颜色
+                ctx.fillText(text, x, canvas.height / (2 * scale) + fontSize / 3); // 在画布上绘制文本
+                setTimeout(() => {
+                    x -= 2; // 调整这个值来控制滚动速度
+                }, 100);
+
+                // 如果文本完全离开画布，则重置位置
+                if (x < -textWidth) {
+                    x = canvas.width / scale;
+                }
+                requestAnimationFrame(scrollText); // 继续动画
+            }
+        }
+
+
+        function applyScrollAnimation(start, end) {
+            resetScrollAnimation();
+            const styleSheet = document.styleSheets[0];
+            for (let i = 0; i < styleSheet.cssRules.length; i++) {
+                const rule = styleSheet.cssRules[i];
+                if (rule.name === 'scroll') {
+                    styleSheet.deleteRule(i);
+                    styleSheet.insertRule(`@keyframes scroll {
+                        0% {
+                            transform: translateX(${start});
+                        }
+                        100% {
+                            transform: translateX(${end});
+                        }
+                    }`, i);
+                    break;
+                }
+            }
+        }
+
+        function resetScrollAnimation() {
+            const score4 = document.querySelector('.score4');
+            score4.style.animation = 'none';
+            score4.offsetHeight; // 强制重绘
+            score4.style.animation = ''; // 重新应用动画
+        }
+
+        function play() {
+            alert('Playing the game...');
+        }
+
+        function getRandomWidth() {
+            // 生成一个介于30%到70%之间的随机宽度
+            return Math.random() * 50 + 40;
+        }
+
+        function animateJellyEffect() {
+            const leftBorder = document.querySelector('.left-border');
+            const leftBorder2 = document.querySelector('.left-border2');
+
+            function updateBorders() {
+                const randomWidth = getRandomWidth();
+                leftBorder.style.width = `${randomWidth}%`;
+                leftBorder2.style.width = `${(100 - randomWidth) * 2.6}%`;
+                setTimeout(() => {
+                    requestAnimationFrame(updateBorders);
+                }, 250); // 每250毫秒调整一次宽度
+            }
+            requestAnimationFrame(updateBorders);
+        }
+
+        animateJellyEffect();
+    </script>
+    <script src="./selectmusic.js"></script>
+</body>
+
+</html>

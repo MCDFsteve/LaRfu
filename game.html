@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaRfu</title>
+    <link rel="stylesheet" href="./game.css">
+    <link rel="stylesheet" href="./fonts.css">
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+        #loadingScreendown {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 1);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 998;
+            color: white;
+            font-size: 70px;
+        }
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(100px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #loadingCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+        }
+
+        #packpng {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: url('./sources/images/icon.png'); /* 替换为你的背景图像路径 */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+    </style>
+</head>
+
+<body>
+    <video id="audioPlayer">
+        Your browser does not support the video tag.
+    </video>
+    <div id="loadingScreendown">
+    </div>
+    <!-- 彩色背景 -->
+    <div id="packpng" style="z-index: 999;"></div>
+    <!-- 加载界面 -->
+    <div id="loadingScreen" class="loading">
+        加载中...
+    </div>
+    <canvas id="loadingCanvas"></canvas>
+
+    <canvas id="newCanvas" style="z-index: 0;position: absolute;opacity: 0.5;"></canvas>
+    <canvas id="webglCanvas" style="z-index: 1;position: absolute;"></canvas>
+    <img id="danmakuImage" src="./sources/images/danmaku.png" style="display: none;">
+    <img id="danmakuImage2" src="./sources/images/danmaku2.png" style="display: none;">
+    <img id="longDanmakuImage" src="./sources/images/danmaku3.png" style="display:none;">
+    <img id="longStartDanmakuImage" src="./sources/images/danmaku3-2.png" style="display:none;">
+    <img id="longEndDanmakuImage" src="./sources/images/danmaku3-1.png" style="display:none;">
+    <img id="longDanmakuImage2" src="./sources/images/danmaku5.png" style="display:none;">
+    <img id="longStartDanmakuImage2" src="./sources/images/danmaku5-2.png" style="display:none;">
+    <img id="longEndDanmakuImage2" src="./sources/images/danmaku5-1.png" style="display:none;">
+    <img id="rewardDanmakuImage" src="./sources/images/danmaku4.png" style="display:none;">
+    <img id="rewardDanmakuImage2" src="./sources/images/danmaku4-1.png" style="display:none;">
+    <img id="danmakuImage6" src="./sources/images/danmaku6.png" style="display: none;">
+    <img id="danmakuImage7" src="./sources/images/danmaku7.png" style="display: none;">
+    <div id="realtimeScoreDisplay"
+        style="position: absolute; left: 50%; transform: translateX(-50%); top: 50%; color: rgb(255, 0, 0); font-size: 24px; display: none;z-index: 10;">
+    </div>
+    <div id="progressContainer" style="position: absolute; top: 0; left: 0; width: 100%; background-color: #ccc;">
+        <div id="progressBar" style="height: 5px; background-color: #007bff; width: 0%;"></div>
+    </div>
+    <div id="timeDisplay" style="display: none;">00:00:000</div>
+    <div id="songTitle"></div>
+    <div id="scoreDisplay">0%</div>
+    <div id="yanchi" style="display: none;">0ms</div>
+    <div id="fpsDisplay">0</div>
+    <div id="over"></div>
+    <div id="overlay" style="display: none;"></div>
+    <div id="buttonsContainer">
+        <div id="playPauseButton" class="playPauseControl pause" onclick="togglePlayPause()" style="display: none;"><img
+                src="./sources/images/pause.png" alt="Pause" class="icon pause-icon" style="display: block;">
+            <img src="./sources/images/play.png" alt="Play" class="icon play-icon" style="display: none;">
+        </div>
+        <div id="restartButton" class="playPauseControl pause" style="display: none;"><img
+                src="./sources/images/restart.png" alt="Restart" class="icon restart-icon" style="display: block;">
+        </div>
+        <div id="closeButton" class="playPauseControl pause" style="display: none;"><img
+                src="./sources/images/close.png" alt="Close" class="icon close-icon" style="display: block;">
+        </div>
+    </div>
+    <!-- 倒计时显示区 -->
+    <div id="countdownDisplay"
+        style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1012;">
+        3
+    </div>
+    <div id="backfull"
+            style="height:100%;width:100%;z-index:5;background-color: #000000;position: fixed;transition: opacity 0.2s ease-in-out;pointer-events: none; ">
+        </div>
+    <script src="./node_modules/animejs/lib/anime.min.js"></script>
+    <script src="./gamefunction.js"></script>
+    <script src="./gameclass.js"></script>
+    <script src="./maingame.js"></script>
+</body>
+
+</html>

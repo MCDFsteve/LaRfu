@@ -1,0 +1,38 @@
+@font-face {
+    font-family: 'Orbitron';
+    src: url('sources/fonts/Orbitron-Medium.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Orbitron';
+    src: url('sources/fonts/Orbitron-Regular.ttf') format('truetype');
+    font-weight: lighter;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Orbitron';
+    src: url('sources/fonts/Orbitron-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Score';
+    src: url('sources/fonts/score.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'zhCN';
+    src: url('sources/fonts/SourceHanSansCN-Normal.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'zhCN';
+    src: url('sources/fonts/SourceHanSansCN-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}

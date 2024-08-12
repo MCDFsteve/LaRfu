@@ -1,0 +1,54 @@
+{
+  "name": "larfu",
+  "productName": "Larfu",
+  "version": "0.0.14",
+  "description": "Larfu? Love!",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "win": "electron-builder --win --x64",
+    "woa": "electron-builder --win --arm64",
+    "mac": "electron-builder --mac"
+  },
+  "build": {
+    "appId": "com.dfsteve.larfu",
+    "asar": false,
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "identity": null
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ],
+      "icon": "icon.ico",
+      "extraResources": [
+        "assets"
+      ]
+    }
+  },
+  "keywords": [],
+  "author": "DFsteve",
+  "license": "GPLv2",
+  "devDependencies": {
+    "electron": "^29.3.0",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "animejs": "^3.2.2",
+    "particles.js": "^2.0.0",
+    "three": "^0.164.1",
+    "wine": "^0.9.13"
+  }
+}

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electron App</title>
+    <link rel="stylesheet" href="./game.css">
+</head>
+<body>
+    <audio id="audioPlayer" hidden></audio>
+    <div id="progressContainer" style="position: absolute; top: 0; left: 0; width: 100%; background-color: #ccc;">
+        <div id="progressBar" style="height: 5px; background-color: #007bff; width: 0%;"></div>
+    </div>
+    <div id="timeDisplay">00:00:000</div>
+    <div id="songTitle">Song Title</div>
+    <button id="leftButton" class="button red"></button>
+    <button id="rightButton" class="button blue"></button>
+    <script>require('./game.js')</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaRfu</title>
+    <link rel="stylesheet" href="./game.css">
+</head>
+<body>
+    <video id="audioPlayer">
+        Your browser does not support the video tag.
+    </video>
+    <!-- 加载界面 -->
+<!-- 加载界面 -->
+<div id="loadingScreen" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('sources/images/loading.png') no-repeat center center;
+    background-size: cover;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    font-size:70px;
+    color: rgb(0, 0, 0);">
+    加载中...
+</div>
+
+    <canvas id="webglCanvas"></canvas>
+    <img id="danmakuImage" src="./sources/images/danmaku.png" style="display: none;">
+    <img id="danmakuImage2" src="./sources/images/danmaku2.png" style="display: none;">
+    <img id="longDanmakuImage" src="./sources/images/danmaku3.png" style="display:none;">
+    <img id="longStartDanmakuImage" src="./sources/images/danmaku3-2.png" style="display:none;">
+    <img id="longEndDanmakuImage" src="./sources/images/danmaku3-1.png" style="display:none;">
+    <img id="rewardDanmakuImage" src="./sources/images/danmaku4.png" style="display:none;">
+    <div id="realtimeScoreDisplay" style="position: absolute; left: 50%; transform: translateX(-50%); top: 50%; color: rgb(255, 0, 0); font-size: 24px; display: none;"></div>
+    <div id="progressContainer" style="position: absolute; top: 0; left: 0; width: 100%; background-color: #ccc;">
+        <div id="progressBar" style="height: 5px; background-color: #007bff; width: 0%;"></div>
+    </div>
+    <div id="timeDisplay">00:00:000</div>
+    <div id="songTitle">Song Title</div>
+    <div id="scoreDisplay">0%</div>
+    <div id="yanchi">0ms</div>
+    <button id="leftButton" class="button red"></button>
+    <button id="rightButton" class="button blue"></button>
+    <script src="./game.js"></script>
+</body>
+</html>
