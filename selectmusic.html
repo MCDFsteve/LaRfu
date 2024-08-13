@@ -132,6 +132,11 @@
             function scrollText() {
                 ctx.clearRect(0, 0, canvas.width / scale, canvas.height / scale); // 清除画布
                 ctx.fillStyle = 'white'; // 文本颜色
+                // 设置阴影属性
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.5)'; // 阴影颜色
+                ctx.shadowBlur = 12;                   // 阴影模糊半径
+                ctx.shadowOffsetX = 8;                 // 阴影的水平偏移
+                ctx.shadowOffsetY = 8;                 // 阴影的垂直偏移
                 ctx.fillText(text, x, canvas.height / (2 * scale) + fontSize / 3); // 在画布上绘制文本
                 setTimeout(() => {
                     x -= 2; // 调整这个值来控制滚动速度
@@ -179,7 +184,7 @@
 
         function getRandomWidth() {
             // 生成一个介于30%到70%之间的随机宽度
-            return Math.random() * 50 + 40;
+            return Math.random() * 50 + 50;
         }
 
         function animateJellyEffect() {

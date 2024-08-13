@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const musicLevel = jsonData.level !== undefined ? jsonData.level : 5;
                     const musicNumber = jsonData.number !== undefined ? jsonData.number : '#0';
 
-                    // 将文件夹信息添加到数组中
                     folderInfoList.push({
                         folder,
                         musicName,
@@ -57,27 +56,27 @@ document.addEventListener('DOMContentLoaded', () => {
                         defaultIconPath
                     });
 
-                    // 当所有文件夹信息都读取完毕后，进行排序并创建列表项
                     if (folderInfoList.length === folders.length) {
-                        folderInfoList.sort((a, b) => {
-                            return a.musicNumber.localeCompare(b.musicNumber);
-                        });
+                        folderInfoList.sort((a, b) => a.musicNumber.localeCompare(b.musicNumber));
 
                         folderInfoList.forEach((info, i) => {
                             createListItem(info.folder, info.musicName, info.musicLevel, info.musicNumber, info.iconFilePath, info.defaultIconPath);
+
                             // 自动选择第一个文件夹
                             if (i === 0) {
+                                const listItem = document.querySelector('.list-item');
+                                listItem.classList.add('selected');
                                 selectFolder(info.folder, info.iconFilePath, info.defaultIconPath);
                             }
                         });
                     }
                 } catch (error) {
                     console.error(`解析 ${jsonFilePath} 出错:`, error);
+                    // 同样的处理，保证列表项继续添加，即使JSON解析失败
                     const musicName = folder;
                     const musicLevel = 5;
                     const musicNumber = '#0';
 
-                    // 将文件夹信息添加到数组中
                     folderInfoList.push({
                         folder,
                         musicName,
@@ -88,13 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
 
                     if (folderInfoList.length === folders.length) {
-                        folderInfoList.sort((a, b) => {
-                            return a.musicNumber.localeCompare(b.musicNumber);
-                        });
+                        folderInfoList.sort((a, b) => a.musicNumber.localeCompare(b.musicNumber));
 
                         folderInfoList.forEach((info, i) => {
                             createListItem(info.folder, info.musicName, info.musicLevel, info.musicNumber, info.iconFilePath, info.defaultIconPath);
                             if (i === 0) {
+                                const listItem = document.querySelector('.list-item');
+                                listItem.classList.add('selected');
                                 selectFolder(info.folder, info.iconFilePath, info.defaultIconPath);
                             }
                         });
@@ -104,6 +103,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+function backSwitch(iconFilePath, defaultIconPath) {
+    fs.access(iconFilePath, fs.constants.F_OK, (err) => {
+        if (err) {
+            iconFilePath = defaultIconPath; // 如果文件不存在，使用默认图标路径
+        }
+        const back = document.getElementById('back');
+        back.style.backgroundImage = `url(${iconFilePath})`;
+    });
+}
 console.log = function (...args) {
     ipcRenderer.send('log-message', args.map(arg => (typeof arg === 'object' ? JSON.stringify(arg) : arg)).join(' '));
     originalLog.apply(console, args);
@@ -112,7 +120,6 @@ console.log = function (...args) {
 function createListItem(folder, musicName, musicLevel, musicNumber, iconFilePath, defaultIconPath) {
     const listItem = document.createElement('div');
     listItem.classList.add('list-item');
-
     const img = document.createElement('img');
     fs.access(iconFilePath, fs.constants.F_OK, (err) => {
         if (err) {
@@ -121,7 +128,7 @@ function createListItem(folder, musicName, musicLevel, musicNumber, iconFilePath
         img.src = iconFilePath;
         img.alt = musicName;
     });
-
+    backSwitch(iconFilePath, defaultIconPath);
     const details = document.createElement('div');
     details.classList.add('details');
     details.innerHTML = `
@@ -138,12 +145,28 @@ function createListItem(folder, musicName, musicLevel, musicNumber, iconFilePath
 
     listItem.addEventListener('click', () => {
         selectFolder(folder, iconFilePath, defaultIconPath);
+        // 移除所有其他列表项的选中状态
+        document.querySelectorAll('.list-item').forEach(item => item.classList.remove('selected'));
+
+        // 为当前选中的列表项添加选中状态
+        listItem.classList.add('selected');
+    });
+    // 添加双击事件
+    listItem.addEventListener('dblclick', () => {
+        selectFolder(folder, iconFilePath, defaultIconPath);
+        ipcRenderer.send('folder-selected', { musicPath: startMusicPath, jsonFilePath: startJsonPath, iconFilePath: startMusicIcon });
+        // 移除所有其他列表项的选中状态
+        document.querySelectorAll('.list-item').forEach(item => item.classList.remove('selected'));
+
+        // 为当前选中的列表项添加选中状态
+        listItem.classList.add('selected');
     });
 }
 
 function selectFolder(folder, iconFilePath, defaultIconPath) {
     const musicPath = path.join(musicDir, folder, `${folder}.mp4`);
     const jsonFilePath = path.join(musicDir, folder, `${folder}.json`);
+    backSwitch(iconFilePath, defaultIconPath);
     audio.loop = true;
     audio.src = musicPath; // 设置音频路径
     audio.play();

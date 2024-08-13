@@ -1,5 +1,5 @@
 body {
-    font-family: 'Orbitron','zhCN',sans-serif;
+    font-family: 'Orbitron', 'zhCN', sans-serif;
     background-color: #222;
     color: #000000;
     margin: 0;
@@ -9,6 +9,7 @@ body {
     overflow: hidden;
     user-select: none;
 }
+
 #songid {
     color: #7e7e7e;
 }
@@ -40,6 +41,7 @@ body {
     border-bottom: 1.5vw solid #dc4f76;
     border-right: 1.5vw solid #395aff;
     transform-origin: right center;
+    box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.5);
 }
 
 @keyframes scale-up {
@@ -52,8 +54,40 @@ body {
     }
 }
 
-.list-item:hover {
-    box-shadow: 0 0 0 4px white;
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%) translateY(-50%);
+        /* 从右侧外部开始 */
+    }
+
+    to {
+        transform: translateX(0) translateY(-50%);
+        /* 最终位置 */
+    }
+}
+
+.list-item.selected::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) translateX(100%);
+    /* 初始状态在右侧外部 */
+    right: -2%;
+    width: calc((1vw + 2vh)*2);
+    /* 矩形的宽度 */
+    height: calc((1vw + 2vh)/2);
+    background-color: #dc4f76;
+    /* 红色矩形 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    animation: slideInFromRight 0.15s ease-out forwards;
+    /* 0.3s 动画时间 */
+}
+
+.list-item:hover,
+.list-item.selected,
+.list-item.selected:hover {
+    outline: 4px solid white;
+    box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.5);
     animation: scale-up 0.15s forwards;
     /* 设置动画效果，播放一次 */
     animation-fill-mode: forwards;
@@ -94,8 +128,8 @@ body {
 }
 
 #titleid {
-    overflow:overlay;
-    scrollbar-width:auto;
+    overflow: overlay;
+    scrollbar-width: auto;
     /* 设置滚动条的宽度为狭窄 */
     scrollbar-color: #395aff;
     /* 设置滚动条的颜色为黑色 */
@@ -103,7 +137,7 @@ body {
 
 #titleid::-webkit-scrollbar {
     display: block;
-    height:0.5vh;
+    height: 0.5vh;
     /* 隐藏默认滚动条 */
 }
 
@@ -136,6 +170,7 @@ body {
     height: auto;
     border: 0.3vw solid white;
     image-rendering: pixelated;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 
 .score {
@@ -150,12 +185,18 @@ body {
     /* 隐藏溢出部分 */
     text-overflow: ellipsis;
     /* 使用省略号表示溢出部分 */
+    text-shadow: 8px 8px 12px rgba(0, 0, 0, 0.5);
 }
+
 #scrollCanvas {
-    width: 100%;  /* 宽度设为父元素宽度的100% */
-    height: auto; /* 高度自动调整 */
-    display: block; /* 确保 canvas 是块级元素 */
+    width: 100%;
+    /* 宽度设为父元素宽度的100% */
+    height: auto;
+    /* 高度自动调整 */
+    display: block;
+    /* 确保 canvas 是块级元素 */
 }
+
 .score2 {
     font-weight: bold;
 }
@@ -190,6 +231,7 @@ body {
     width: 3vh;
     background-color: rgb(255, 255, 255);
     transform: translateX(-50%);
+    box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.3);
 }
 
 #back {
@@ -199,7 +241,6 @@ body {
     width: 100%;
     height: 100%;
     z-index: -2;
-    background-image: url('sources/images/icon.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -211,30 +252,34 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(50px);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: -1;
 }
+
 .rectangle {
     position: fixed;
-    width: 10vw;
-    height: 10vw;
+    width: 50vw;
+    height: 50vw;
     background-color: rgb(255, 255, 255);
-    clip-path: polygon(0 0, 100% 0, 0 100%);
     margin: 0;
     animation: moveAndBounce2 0.2s ease-in-out forwards;
-    top: 0;
-    left: 0;
+    transform: rotate(-45deg);
+    top: calc(-38vw + 5vw);
+    left: calc(-38vw - 5vw);
     z-index: 5;
+    scale: 1;
+    box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.5);
 }
-
 .rectangle:hover {
     animation: moveAndBounce 0.2s ease-in-out forwards;
-    width: 20vw;
-    height: 20vw;
+    top: -10vw;
+    left: -10vw;
+    top: calc(-38vw + 5vw + 5vw);
+    left: calc(-38vw - 5vw + 5vw);
 }
 
 .right-border {
@@ -245,7 +290,6 @@ body {
     z-index: 6;
     left: 0;
     background-color: #395aff;
-    transform: rotate(-45deg);
     transform-origin: 0 1vw;
     z-index: 6;
 }
@@ -258,71 +302,72 @@ body {
     z-index: 7;
     left: 0;
     background-color: #dc4f76;
-    transform: rotate(-45deg);
     transform-origin: 0 1vw;
 }
 
 @keyframes moveAndBounce {
     0% {
-        width: 10vw;
-        height: 10vw;
+        top: calc(-38vw + 5vw);
+    left: calc(-38vw - 5vw);
     }
 
     50% {
-        width: 21vw;
-        height: 21vw;
+        top: calc(-38vw + 5vw + 6vw);
+    left: calc(-38vw - 5vw + 6vw);
     }
 
     70% {
-        width: 19vw;
-        height: 19vw;
+        top: calc(-38vw + 5vw + 4vw);
+    left: calc(-38vw - 5vw + 4vw);
     }
 
     100% {
-        width: 20vw;
-        height: 20vw;
+        top: calc(-38vw + 5vw + 5vw);
+    left: calc(-38vw - 5vw + 5vw);
     }
 }
 
 @keyframes moveAndBounce2 {
     0% {
-        width: 20vw;
-        height: 20vw;
+        top: calc(-38vw + 5vw + 5vw);
+    left: calc(-38vw - 5vw + 5vw);
+        
     }
 
     50% {
-        width: 9vw;
-        height: 9vw;
+        top: calc(-38vw + 5vw + 1vw);
+    left: calc(-38vw - 5vw + 1vw);
     }
 
     70% {
-        width: 11vw;
-        height: 11vw;
+        top: calc(-38vw + 5vw - 1vw);
+    left: calc(-38vw - 5vw - 1vw);
     }
 
     100% {
-        width: 10vw;
-        height: 10vw;
+        top: calc(-38vw + 5vw);
+        left: calc(-38vw - 5vw);
     }
 }
 
 .rectangle2 {
     position: fixed;
-    width: 10vw;
-    height: 10vw;
+    width: 70vw;
+    height: 70vw;
     background-color: rgb(255, 255, 255);
-    clip-path: polygon(100% 100%, 0 100%, 100% 0);
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+    transform: rotate(135deg);
+    bottom: calc(-55vw + 15vw);
+    right: calc(-55vw - 15vw);
     margin: 0;
     animation: moveAndBounce4 0.2s ease-in-out forwards;
-    bottom: 0;
-    right: 0;
     z-index: 5;
 }
 
 .rectangle2:hover {
     animation: moveAndBounce3 0.2s ease-in-out forwards;
-    width: 30vw;
-    height: 30vw;
+    bottom: calc(-55vw + 15vw );
+    right: calc(-55vw - 15vw + 22vw);
 }
 
 .right-border2 {
@@ -333,7 +378,6 @@ body {
     z-index: 6;
     left: 0;
     background-color: #395aff;
-    transform: rotate(-45deg);
     transform-origin: 3vw 5vw;
     z-index: 6;
 }
@@ -347,50 +391,49 @@ body {
     z-index: 7;
     left: 0;
     background-color: #dc4f76;
-    transform: rotate(-45deg);
     transform-origin: 3vw 5vw;
 }
 
 @keyframes moveAndBounce3 {
     0% {
-        width: 10vw;
-        height: 10vw;
+        bottom: calc(-55vw + 15vw);
+    right: calc(-55vw - 15vw);
     }
 
     50% {
-        width: 31vw;
-        height: 31vw;
+        bottom: calc(-55vw + 16vw );
+    right: calc(-55vw - 15vw + 23vw);
     }
 
     70% {
-        width: 29vw;
-        height: 29vw;
+        bottom: calc(-55vw + 14vw );
+    right: calc(-55vw - 15vw + 21vw);
     }
 
     100% {
-        width: 30vw;
-        height: 30vw;
+        bottom: calc(-55vw + 15vw );
+    right: calc(-55vw - 15vw + 22vw);
     }
 }
 
 @keyframes moveAndBounce4 {
     0% {
-        width: 30vw;
-        height: 30vw;
+        bottom: calc(-55vw + 15vw );
+    right: calc(-55vw - 15vw + 22vw);
     }
 
     50% {
-        width: 9vw;
-        height: 9vw;
+        bottom: calc(-55vw + 15vw - 1vw);
+    right: calc(-55vw - 15vw - 1vw);
     }
 
     70% {
-        width: 11vw;
-        height: 11vw;
+        bottom: calc(-55vw + 15vw + 1vw);
+    right: calc(-55vw - 15vw + 1vw);
     }
 
     100% {
-        width: 10vw;
-        height: 10vw;
+        bottom: calc(-55vw + 15vw);
+    right: calc(-55vw - 15vw);
     }
 }
