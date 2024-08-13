@@ -1,0 +1,989 @@
+{
+  "music": "没有名字的怪物 - 心理测量者片尾曲 - 可以",
+  "number": "#2",
+  "level":"7",
+  "mode": {
+    "one": {
+      "groups": [
+        {
+          "time": "00:03:644,00:04:115",
+          "speed": 1,
+          "rail": "a",
+          "road": 1
+        },
+        {
+          "time": "00:04:316,00:04:744",
+          "speed": 1,
+          "rail": "a",
+          "road": 2
+        },
+        {
+          "time": "00:04:926,00:05:223",
+          "speed": 1,
+          "rail": "a",
+          "road": 3
+        },
+        {
+          "time": "00:05:380,00:06:141",
+          "speed": 1,
+          "rail": "a",
+          "road": 4
+        },
+        {
+          "time": "00:06:327",
+          "speed": 1,
+          "rail": "a",
+          "road": 5
+        },
+        {
+          "time": "00:06:740,00:06:988",
+          "speed": 1,
+          "rail": "a",
+          "road": 6
+        },
+        {
+          "time": "00:07:191,00:07:932",
+          "speed": 1,
+          "rail": "a",
+          "road": 7
+        },
+        {
+          "time": "00:08:988,00:09:461",
+          "speed": 1,
+          "rail": "a",
+          "road": 8
+        },
+        {
+          "time": "00:09:634,00:10:086",
+          "speed": 1,
+          "rail": "a",
+          "road": 7
+        },
+        {
+          "time": "00:10:291,00:10:689",
+          "speed": 1,
+          "rail": "a",
+          "road": 6
+        },
+        {
+          "time": "00:00:647,00:11:346",
+          "speed": 1,
+          "rail": "b",
+          "road": 2
+        },
+        {
+          "time": "00:10:948,00:15:940",
+          "speed": 1,
+          "rail": "a",
+          "road": 3
+        },
+        {
+          "time": "00:11:717,00:15:945",
+          "speed": 1,
+          "rail": "b",
+          "road": 4
+        },
+        {
+          "time": "00:16:371",
+          "speed": 1,
+          "rail": "b",
+          "road": 5
+        },
+        {
+          "time": "00:16:638",
+          "speed": 1,
+          "rail": "b",
+          "road": 6
+        },
+        {
+          "time": "00:16:893,00:17:460",
+          "speed": 1,
+          "rail": "b",
+          "road": 7
+        },
+        {
+          "time": "00:17:592",
+          "speed": 1,
+          "rail": "b",
+          "road": 8
+        },
+        {
+          "time": "00:17:867",
+          "speed": 1,
+          "rail": "b",
+          "road": 1
+        },
+        {
+          "time": "00:18:157,00:19:623",
+          "speed": 1,
+          "rail": "b",
+          "road": 2
+        },
+        {
+          "time": "00:21:535",
+          "speed": 1,
+          "rail": "b",
+          "road": 3
+        },
+        {
+          "time": "00:21:912",
+          "speed": 1,
+          "rail": "b",
+          "road": 4
+        },
+        {
+          "time": "00:22:169,00:23:085",
+          "speed": 1,
+          "rail": "b",
+          "road": 5
+        },
+        {
+          "time": "00:23:185",
+          "speed": 1,
+          "rail": "b",
+          "road": 6
+        },
+        {
+          "time": "00:23:343",
+          "speed": 1,
+          "rail": "b",
+          "road": 7
+        },
+        {
+          "time": "00:23:495,00:25:271",
+          "speed": 1,
+          "rail": "b",
+          "road": 8
+        },
+        {
+          "time": "00:26:870,00:27:088",
+          "speed": 1,
+          "rail": "a",
+          "road": 1
+        },
+        {
+          "time": "00:27:196",
+          "speed": 1,
+          "rail": "a",
+          "road": 2
+        },
+        {
+          "time": "00:28:232",
+          "speed": 1,
+          "rail": "b",
+          "road": 3
+        },
+        {
+          "time": "00:28:554",
+          "speed": 1,
+          "rail": "b",
+          "road": 4
+        },
+        {
+          "time": "00:27:500,00:30:750",
+          "speed": 1,
+          "rail": "a",
+          "road": 5
+        },
+        {
+          "time": "00:28:869,00:30:783",
+          "speed": 1,
+          "rail": "b",
+          "road": 6
+        },
+        {
+          "time": "00:32:186",
+          "speed": 1,
+          "rail": "a",
+          "road": 7
+        },
+        {
+          "time": "00:32:340",
+          "speed": 1,
+          "rail": "a",
+          "road": 8
+        },
+        {
+          "time": "00:32:504",
+          "speed": 1,
+          "rail": "a",
+          "road": 1
+        },
+        {
+          "time": "00:33:507",
+          "speed": 1,
+          "rail": "b",
+          "road": 2
+        },
+        {
+          "time": "00:33:670",
+          "speed": 1,
+          "rail": "b",
+          "road": 3
+        },
+        {
+          "time": "00:33:867",
+          "speed": 1,
+          "rail": "b",
+          "road": 4
+        },
+        {
+          "time": "00:32:847,00:36:951",
+          "speed": 1,
+          "rail": "a",
+          "road": 5
+        },
+        {
+          "time": "00:34:152,00:37:000",
+          "speed": 1,
+          "rail": "b",
+          "road": 6
+        },
+        {
+          "time": "00:37:541",
+          "speed": 1,
+          "rail": "a",
+          "road": 7
+        },
+        {
+          "time": "00:37:894,00:38:114",
+          "speed": 1,
+          "rail": "a",
+          "road": 8
+        },
+        {
+          "time": "00:38:184,00:38:783",
+          "speed": 1,
+          "rail": "b",
+          "road": 1
+        },
+        {
+          "time": "00:38:825",
+          "speed": 1,
+          "rail": "a",
+          "road": 2
+        },
+        {
+          "time": "00:38:976",
+          "speed": 1,
+          "rail": "b",
+          "road": 3
+        },
+        {
+          "time": "00:39:103",
+          "speed": 1,
+          "rail": "a",
+          "road": 4
+        },
+        {
+          "time": "00:39:300,00:39:758",
+          "speed": 1,
+          "rail": "b",
+          "road": 5
+        },
+        {
+          "time": "00:39:585,00:42:414",
+          "speed": 1,
+          "rail": "a",
+          "road": 6
+        },
+        {
+          "time": "00:42:810",
+          "speed": 1,
+          "rail": "b",
+          "road": 7
+        },
+        {
+          "time": "00:42:987",
+          "speed": 1,
+          "rail": "b",
+          "road": 8
+        },
+        {
+          "time": "00:43:161",
+          "speed": 1,
+          "rail": "b",
+          "road": 1
+        },
+        {
+          "time": "00:43:465,00:44:230",
+          "speed": 1,
+          "rail": "b",
+          "road": 2
+        },
+        {
+          "time": "00:44:323",
+          "speed": 1,
+          "rail": "b",
+          "road": 3
+        },
+        {
+          "time": "00:44:557",
+          "speed": 1,
+          "rail": "b",
+          "road": 4
+        },
+        {
+          "time": "00:44:816,00:46:191",
+          "speed": 1,
+          "rail": "b",
+          "road": 5
+        },
+        {
+          "time": "00:48:144",
+          "speed": 1,
+          "rail": "a",
+          "road": 6
+        },
+        {
+          "time": "00:48:291",
+          "speed": 1,
+          "rail": "a",
+          "road": 7
+        },
+        {
+          "time": "00:48:471",
+          "speed": 1,
+          "rail": "a",
+          "road": 8
+        },
+        {
+          "time": "00:48:782,00:49:445",
+          "speed": 1,
+          "rail": "a",
+          "road": 1
+        },
+        {
+          "time": "00:49:573",
+          "speed": 1,
+          "rail": "a",
+          "road": 2
+        },
+        {
+          "time": "00:49:729",
+          "speed": 1,
+          "rail": "a",
+          "road": 3
+        },
+        {
+          "time": "00:49:885",
+          "speed": 1,
+          "rail": "a",
+          "road": 4
+        },
+        {
+          "time": "00:50:140,00:51:213",
+          "speed": 1,
+          "rail": "a",
+          "road": 5
+        },
+        {
+          "time": "00:53:515",
+          "speed": 1,
+          "rail": "b",
+          "road": 6
+        },
+        {
+          "time": "00:53:681",
+          "speed": 1,
+          "rail": "b",
+          "road": 7
+        },
+        {
+          "time": "00:53:866",
+          "speed": 1,
+          "rail": "b",
+          "road": 8
+        },
+        {
+          "time": "00:54:119,00:54:628",
+          "speed": 1,
+          "rail": "b",
+          "road": 1
+        },
+        {
+          "time": "00:54:745",
+          "speed": 1,
+          "rail": "b",
+          "road": 2
+        },
+        {
+          "time": "00:54:918",
+          "speed": 1,
+          "rail": "b",
+          "road": 3
+        },
+        {
+          "time": "00:55:086",
+          "speed": 1,
+          "rail": "b",
+          "road": 4
+        },
+        {
+          "time": "00:55:414,00:57:211",
+          "speed": 1,
+          "rail": "b",
+          "road": 5
+        },
+        {
+          "time": "00:59:515",
+          "speed": 1,
+          "rail": "a",
+          "road": 6
+        },
+        {
+          "time": "00:59:686",
+          "speed": 1,
+          "rail": "a",
+          "road": 7
+        },
+        {
+          "time": "00:59:954",
+          "speed": 1,
+          "rail": "a",
+          "road": 8
+        },
+        {
+          "time": "01:00:871",
+          "speed": 1,
+          "rail": "b",
+          "road": 1
+        },
+        {
+          "time": "01:01:028",
+          "speed": 1,
+          "rail": "b",
+          "road": 2
+        },
+        {
+          "time": "01:01:202",
+          "speed": 1,
+          "rail": "b",
+          "road": 3
+        },
+        {
+          "time": "01:01:382",
+          "speed": 1,
+          "rail": "b",
+          "road": 4
+        },
+        {
+          "time": "01:01:539",
+          "speed": 1,
+          "rail": "b",
+          "road": 5
+        },
+        {
+          "time": "01:01:690",
+          "speed": 1,
+          "rail": "b",
+          "road": 6
+        },
+        {
+          "time": "01:01:855",
+          "speed": 1,
+          "rail": "b",
+          "road": 7
+        },
+        {
+          "time": "01:02:204",
+          "speed": 1,
+          "rail": "b",
+          "road": 8
+        },
+        {
+          "time": "01:02:364",
+          "speed": 1,
+          "rail": "b",
+          "road": 1
+        },
+        {
+          "time": "01:02:631",
+          "speed": 1,
+          "rail": "b",
+          "road": 2
+        },
+        {
+          "time": "01:02:824,01:03:404",
+          "speed": 1,
+          "rail": "b",
+          "road": 3
+        },
+        {
+          "time": "01:03:532",
+          "speed": 1,
+          "rail": "b",
+          "road": 4
+        },
+        {
+          "time": "01:03:698",
+          "speed": 1,
+          "rail": "b",
+          "road": 5
+        },
+        {
+          "time": "01:03:849",
+          "speed": 1,
+          "rail": "b",
+          "road": 6
+        },
+        {
+          "time": "01:04:010",
+          "speed": 1,
+          "rail": "b",
+          "road": 7
+        },
+        {
+          "time": "01:04:175",
+          "speed": 1,
+          "rail": "b",
+          "road": 8
+        },
+        {
+          "time": "01:04:334",
+          "speed": 1,
+          "rail": "b",
+          "road": 1
+        },
+        {
+          "time": "01:00:135,01:04:716",
+          "speed": 1,
+          "rail": "a",
+          "road": 2
+        },
+        {
+          "time": "01:04:902",
+          "speed": 1,
+          "rail": "a",
+          "road": 3
+        },
+        {
+          "time": "01:05:038",
+          "speed": 1,
+          "rail": "a",
+          "road": 4
+        },
+        {
+          "time": "01:05:322",
+          "speed": 1,
+          "rail": "a",
+          "road": 5
+        },
+        {
+          "time": "01:05:494,01:05:854",
+          "speed": 1,
+          "rail": "a",
+          "road": 6
+        },
+        {
+          "time": "01:05:954",
+          "speed": 1,
+          "rail": "a",
+          "road": 7
+        },
+        {
+          "time": "01:06:179",
+          "speed": 1,
+          "rail": "a",
+          "road": 8
+        },
+        {
+          "time": "01:06:329,01:06:535",
+          "speed": 1,
+          "rail": "a",
+          "road": 1
+        },
+        {
+          "time": "01:06:634",
+          "speed": 1,
+          "rail": "a",
+          "road": 2
+        },
+        {
+          "time": "01:06:798,01:07:001",
+          "speed": 1,
+          "rail": "a",
+          "road": 3
+        },
+        {
+          "time": "01:07:141",
+          "speed": 1,
+          "rail": "a",
+          "road": 4
+        },
+        {
+          "time": "01:07:300",
+          "speed": 1,
+          "rail": "a",
+          "road": 5
+        },
+        {
+          "time": "01:07:461",
+          "speed": 1,
+          "rail": "a",
+          "road": 6
+        },
+        {
+          "time": "01:07:630",
+          "speed": 1,
+          "rail": "a",
+          "road": 7
+        },
+        {
+          "time": "01:07:940",
+          "speed": 1,
+          "rail": "a",
+          "road": 8
+        },
+        {
+          "time": "01:08:117",
+          "speed": 1,
+          "rail": "a",
+          "road": 1
+        },
+        {
+          "time": "01:08:436",
+          "speed": 1,
+          "rail": "a",
+          "road": 2
+        },
+        {
+          "time": "01:08:602",
+          "speed": 1,
+          "rail": "a",
+          "road": 3
+        },
+        {
+          "time": "01:08:754",
+          "speed": 1,
+          "rail": "a",
+          "road": 4
+        },
+        {
+          "time": "01:08:945,01:09:439",
+          "speed": 1,
+          "rail": "a",
+          "road": 5
+        },
+        {
+          "time": "01:04:520,01:09:980",
+          "speed": 1,
+          "rail": "b",
+          "road": 6
+        },
+        {
+          "time": "01:10:253",
+          "speed": 1,
+          "rail": "b",
+          "road": 7
+        },
+        {
+          "time": "01:10:619",
+          "speed": 1,
+          "rail": "b",
+          "road": 8
+        },
+        {
+          "time": "01:10:799,01:11:510",
+          "speed": 1,
+          "rail": "b",
+          "road": 1
+        },
+        {
+          "time": "01:11:692",
+          "speed": 1,
+          "rail": "b",
+          "road": 2
+        },
+        {
+          "time": "01:11:999",
+          "speed": 1,
+          "rail": "b",
+          "road": 3
+        },
+        {
+          "time": "01:12:326",
+          "speed": 1,
+          "rail": "b",
+          "road": 4
+        },
+        {
+          "time": "01:12:504,01:12:704",
+          "speed": 1,
+          "rail": "b",
+          "road": 5
+        },
+        {
+          "time": "01:12:825",
+          "speed": 1,
+          "rail": "b",
+          "road": 6
+        },
+        {
+          "time": "01:12:983",
+          "speed": 1,
+          "rail": "b",
+          "road": 7
+        },
+        {
+          "time": "01:13:343",
+          "speed": 1,
+          "rail": "b",
+          "road": 8
+        },
+        {
+          "time": "01:13:511,01:14:029",
+          "speed": 1,
+          "rail": "b",
+          "road": 1
+        },
+        {
+          "time": "01:14:184",
+          "speed": 1,
+          "rail": "b",
+          "road": 2
+        },
+        {
+          "time": "01:14:358",
+          "speed": 1,
+          "rail": "b",
+          "road": 3
+        },
+        {
+          "time": "01:14:538",
+          "speed": 1,
+          "rail": "b",
+          "road": 4
+        },
+        {
+          "time": "01:14:696",
+          "speed": 1,
+          "rail": "b",
+          "road": 5
+        },
+        {
+          "time": "01:14:854",
+          "speed": 1,
+          "rail": "b",
+          "road": 6
+        },
+        {
+          "time": "01:15:017",
+          "speed": 1,
+          "rail": "b",
+          "road": 7
+        },
+        {
+          "time": "01:15:180",
+          "speed": 1,
+          "rail": "b",
+          "road": 8
+        },
+        {
+          "time": "01:15:513",
+          "speed": 1,
+          "rail": "b",
+          "road": 1
+        },
+        {
+          "time": "01:15:676",
+          "speed": 1,
+          "rail": "b",
+          "road": 2
+        },
+        {
+          "time": "01:15:969",
+          "speed": 1,
+          "rail": "b",
+          "road": 3
+        },
+        {
+          "time": "01:16:145",
+          "speed": 1,
+          "rail": "b",
+          "road": 4
+        },
+        {
+          "time": "01:16:488",
+          "speed": 1,
+          "rail": "b",
+          "road": 5
+        },
+        {
+          "time": "01:16:814",
+          "speed": 1,
+          "rail": "b",
+          "road": 6
+        },
+        {
+          "time": "01:17:005",
+          "speed": 1,
+          "rail": "b",
+          "road": 7
+        },
+        {
+          "time": "01:17:307",
+          "speed": 1,
+          "rail": "b",
+          "road": 8
+        },
+        {
+          "time": "01:17:481",
+          "speed": 1,
+          "rail": "b",
+          "road": 1
+        },
+        {
+          "time": "01:17:791",
+          "speed": 1,
+          "rail": "b",
+          "road": 2
+        },
+        {
+          "time": "01:17:950",
+          "speed": 1,
+          "rail": "b",
+          "road": 3
+        },
+        {
+          "time": "01:18:129",
+          "speed": 1,
+          "rail": "b",
+          "road": 4
+        },
+        {
+          "time": "01:18:339",
+          "speed": 1,
+          "rail": "b",
+          "road": 5
+        },
+        {
+          "time": "01:18:628",
+          "speed": 1,
+          "rail": "b",
+          "road": 6
+        },
+        {
+          "time": "01:18:828",
+          "speed": 1,
+          "rail": "b",
+          "road": 7
+        },
+        {
+          "time": "01:19:123",
+          "speed": 1,
+          "rail": "b",
+          "road": 8
+        },
+        {
+          "time": "01:19:293",
+          "speed": 1,
+          "rail": "b",
+          "road": 1
+        },
+        {
+          "time": "01:19:482",
+          "speed": 1,
+          "rail": "b",
+          "road": 2
+        },
+        {
+          "time": "01:19:665",
+          "speed": 1,
+          "rail": "b",
+          "road": 3
+        },
+        {
+          "time": "01:19:933",
+          "speed": 1,
+          "rail": "b",
+          "road": 4
+        },
+        {
+          "time": "01:20:151,01:20:441",
+          "speed": 1,
+          "rail": "b",
+          "road": 5
+        },
+        {
+          "time": "01:20:650",
+          "speed": 1,
+          "rail": "b",
+          "road": 6
+        },
+        {
+          "time": "01:20:965,01:23:440",
+          "speed": 1,
+          "rail": "b",
+          "road": 7
+        },
+        {
+          "time": "01:23:552",
+          "speed": 1,
+          "rail": "b",
+          "road": 8
+        },
+        {
+          "time": "01:09:564,01:26:488",
+          "speed": 1,
+          "rail": "a",
+          "road": 1
+        },
+        {
+          "time": "01:23:702,01:26:549",
+          "speed": 1,
+          "rail": "b",
+          "road": 2
+        },
+        {
+          "time": "01:27:658",
+          "speed": 1,
+          "rail": "a",
+          "road": 3
+        },
+        {
+          "time": "01:27:660",
+          "speed": 1,
+          "rail": "b",
+          "road": 4
+        },
+        {
+          "time": "01:27:818",
+          "speed": 1,
+          "rail": "a",
+          "road": 5
+        },
+        {
+          "time": "01:27:847",
+          "speed": 1,
+          "rail": "b",
+          "road": 6
+        },
+        {
+          "time": "01:27:987",
+          "speed": 1,
+          "rail": "a",
+          "road": 7
+        },
+        {
+          "time": "01:28:016",
+          "speed": 1,
+          "rail": "b",
+          "road": 8
+        },
+        {
+          "time": "01:28:169",
+          "speed": 1,
+          "rail": "a",
+          "road": 1
+        },
+        {
+          "time": "01:28:191",
+          "speed": 1,
+          "rail": "b",
+          "road": 2
+        }
+      ]
+    }
+  }
+}
