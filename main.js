@@ -7,7 +7,87 @@ let musicPath = null;
 let jsonFilePath = null;
 let iconFilePath = null;
 let mainWindow;
+// 获取应用程序目录路径
+const userDataPath = app.getPath('userData');
+const filePath = path.join(userDataPath, 'paths.json');
+const scoreFilePath = path.join(userDataPath, 'score.json');
+ipcMain.on('save-score', (event, { score, number }) => {
+    fs.readFile(scoreFilePath, 'utf-8', (err, data) => {
+        let existingScores = [];
 
+        if (err) {
+            if (err.code !== 'ENOENT') {
+                console.error('Failed to read existing score data:', err);
+                return;
+            }
+        } else {
+            try {
+                existingScores = JSON.parse(data);
+
+                // 如果 existingScores 不是数组，则将其初始化为数组
+                if (!Array.isArray(existingScores)) {
+                    console.error('Existing score data is not an array, initializing as an empty array.');
+                    existingScores = [];
+                }
+
+            } catch (parseError) {
+                console.error('Failed to parse existing score data, initializing as an empty array:', parseError);
+                existingScores = [];
+            }
+        }
+
+        // 查找是否已经存在相同 number 的分数
+        let existingEntry = existingScores.find(entry => entry.number === number);
+
+        if (existingEntry) {
+            // 如果存在且新的分数不大于旧分数，退出
+            if (score <= existingEntry.score) {
+                console.log('New score is not higher than the existing score. No update made.');
+                return;
+            }
+
+            // 更新已有的分数
+            existingEntry.score = score;
+        } else {
+            // 如果不存在，添加新的分数
+            existingScores.push({ score, number });
+        }
+
+        // 写入更新后的数据到 score.json 文件
+        fs.writeFile(scoreFilePath, JSON.stringify(existingScores, null, 2), (err) => {
+            if (err) {
+                console.error('Failed to save score:', err);
+            } else {
+                console.log('Score saved successfully to', scoreFilePath);
+            }
+        });
+    });
+});
+ipcMain.on('get-score', (event, number) => {
+    fs.readFile(scoreFilePath, 'utf-8', (err, data) => {
+        if (err) {
+            console.error('Failed to read score data:', err);
+            event.reply('get-score-reply', { success: false, error: 'Failed to read score data.' });
+            return;
+        }
+
+        try {
+            const existingScores = JSON.parse(data);
+            const entry = existingScores.find(entry => entry.number === number);
+
+            if (entry) {
+                // 如果找到对应的分数，返回它
+                event.reply('get-score-reply', { success: true, data: entry });
+            } else {
+                // 如果没有找到对应的分数，返回错误信息
+                event.reply('get-score-reply', { success: false, error: 'Score not found for the specified number.' });
+            }
+        } catch (parseError) {
+            console.error('Failed to parse score data:', parseError);
+            event.reply('get-score-reply', { success: false, error: 'Failed to parse score data.' });
+        }
+    });
+});
 function createWindow() {
     const { width, height } = screen.getPrimaryDisplay().workAreaSize;
     mainWindow = new BrowserWindow({
@@ -51,24 +131,21 @@ ipcMain.on('folder-selected', (event, { musicPath, jsonFilePath, iconFilePath })
     console.log('JSON file path:', jsonFilePath);
     console.log('Icon file path:', iconFilePath);
     const data = { musicPath, jsonFilePath, iconFilePath };
-    const dirPath = path.join(os.homedir(), 'Downloads', 'LaRfu');
-    const filePath = path.join(dirPath, 'paths.json');
 
-    // 检查目录是否存在，如果不存在，则创建它
-    if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath, { recursive: true });
+    // 写入文件前检查目录是否存在，如果不存在，则创建它
+    if (!fs.existsSync(userDataPath)) {
+        fs.mkdirSync(userDataPath, { recursive: true });
     }
 
-    // 写入文件
+    // 将数据写入到 paths.json 文件中
     fs.writeFileSync(filePath, JSON.stringify(data), 'utf-8');
     console.log('JSON data written to', filePath);
 
-    // 尝试获取当前的主窗口或新建一个
+    // 获取主窗口或创建一个新窗口
     let mainWindow = BrowserWindow.getAllWindows()[0] || mainWindow;
 
-    // 如果当前没有任何窗口，先创建窗口
     if (!mainWindow || mainWindow.isDestroyed()) {
-        createWindow(); // 此函数调用后 mainWindow 应该被正确初始化
+        createWindow(); // 创建新窗口
     }
 
     // 确保窗口加载完毕后发送数据，并切换到游戏界面
@@ -82,6 +159,11 @@ ipcMain.on('folder-selected', (event, { musicPath, jsonFilePath, iconFilePath })
     });
 });
 
+// 提供一个 IPC 通讯接口让渲染进程获取 paths.json 的路径
+ipcMain.handle('get-paths-json-path', async () => {
+    return filePath;
+});
+
 ipcMain.on('log-message', (event, message) => {
     console.log(message);
 });
@@ -89,9 +171,9 @@ ipcMain.on('log-message', (event, message) => {
 app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
+    //if (process.platform !== 'darwin') {
         app.quit();
-    }
+    //}
 });
 
 app.on('activate', () => {

@@ -14,7 +14,7 @@ function keytop(action) {
         }
     }
 }
-function initializeApplication(musicPath, jsonFilePath2,iconPath) {
+function initializeApplication(musicPath, jsonFilePath2, iconPath) {
     const progressBar = document.getElementById('progressBar');
     const timeDisplay = document.getElementById('timeDisplay');
     const songTitle = document.getElementById('songTitle');
@@ -41,8 +41,9 @@ function initializeApplication(musicPath, jsonFilePath2,iconPath) {
         .then(response => response.json())
         .then(data => {
             musicTitle = data.music;
+            number = data.number;
             songTitle.textContent = `${musicTitle}`;
-            console.log('musicTitle:',musicTitle);
+            console.log('musicTitle:', musicTitle);
             if (data.mode && data.mode.one && data.mode.one.groups && data.mode.one.groups.length > 0) {
                 const jsonData = preprocessDanmakus(data.mode.one.groups);
                 initializeDanmakus(jsonData);  // 初始化弹幕
@@ -59,6 +60,10 @@ function initializeApplication(musicPath, jsonFilePath2,iconPath) {
         timeDisplay.textContent = formatTime(audioPlayer.currentTime);
         audioPlayer.muted = false;
     });
+    // 在歌曲播放结束时调用
+    audioPlayer.addEventListener('ended', () => {
+        saveScoreToFile(totalScore, number);
+    });
     scoreDisplay = document.getElementById('scoreDisplay');
     updateScoreDisplay(); // 更新分数显示
     loadInitialGameData();
@@ -67,7 +72,21 @@ function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 }
-
+// 获取 paths.json 的路径
+async function getPathsJsonPath() {
+    try {
+        const pathsJsonPath = await ipcRenderer.invoke('get-paths-json-path');
+        console.log('Paths.json path:', pathsJsonPath);
+        return pathsJsonPath;
+    } catch (error) {
+        console.error('Failed to get paths.json path:', error);
+    }
+}
+// 保存分数到文件的方法
+function saveScoreToFile(totalScore, number) {
+    // 通过 ipcRenderer 向主进程发送保存分数的请求
+    ipcRenderer.send('save-score', { score: totalScore, number: number });
+}
 function resizeNewCanvas() {
     newCanvas.width = window.innerWidth;
     newCanvas.height = window.innerHeight;
@@ -217,19 +236,19 @@ function showRealtimeScore(x, y, message) {
         scoreDiv.style.color = 'rgb(65,204,84)';
         scoreDiv.style.webkitTextStroke = '2px rgb(33,104,42)';
         scoreDiv.style.fontSize = '2vw';
-    }else if (message === 'Perfect!!'){
+    } else if (message === 'Perfect!!') {
         scoreDiv.style.color = 'rgb(235,255,59)';
         scoreDiv.style.webkitTextStroke = '2px rgb(90,104,33)';
         scoreDiv.style.fontSize = '2.3vw';
-    }else if (message === 'Perfect+!!' || message === 'Excellent!!'){
+    } else if (message === 'Perfect+!!' || message === 'Excellent!!') {
         scoreDiv.style.color = 'rgb(255,59,59)';
         scoreDiv.style.webkitTextStroke = '2px rgb(104,33,33)';
         scoreDiv.style.fontSize = '2.6vw';
-    }else if (message === 'Holding'){
+    } else if (message === 'Holding') {
         scoreDiv.style.color = 'rgb(59,160,255)';
         scoreDiv.style.webkitTextStroke = '2px rgb(33,52,104)';
         scoreDiv.style.fontSize = '2vw';
-    }else{
+    } else {
         scoreDiv.style.color = 'rgb(145,145,145)';
         scoreDiv.style.webkitTextStroke = '2px rgb(0,0,0)';
         scoreDiv.style.fontSize = '1.8vw';

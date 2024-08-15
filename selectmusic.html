@@ -27,11 +27,11 @@
             </div>
         </div>
         <div class="center-line"></div>
-        <div class="rectangle">
+        <div class="rectangle" id="paperLeft">
             <div class="left-border"></div>
             <div class="right-border"></div>
         </div>
-        <div class="rectangle2">
+        <div class="rectangle2" id="paperRight">
             <div class="left-border2"></div>
             <div class="right-border2"></div>
         </div>
@@ -40,26 +40,35 @@
         </div>
     </div>
     <script>
+        let ViewHover = true;
         document.addEventListener('mousemove', (event) => {
             const viewmain = document.getElementById('viewmain');
             const viewmainRect = viewmain.getBoundingClientRect();
-
             // 获取鼠标的当前坐标
             const mouseX = event.clientX;
             const mouseY = event.clientY;
 
             // 判断鼠标是否在矩形范围内
+            const paperRight = document.getElementById('paperRight');
+            const hoveredElement = document.elementFromPoint(mouseX, mouseY);
+
             if (
                 mouseX >= viewmainRect.left &&
                 mouseX <= viewmainRect.right &&
                 mouseY >= viewmainRect.top &&
-                mouseY <= viewmainRect.bottom
+                mouseY <= viewmainRect.bottom &&
+                hoveredElement !== paperRight // 新的条件，检查鼠标是否直接在 paperRight 上
             ) {
-                // 鼠标在矩形范围内，放大元素
+                // 鼠标在 viewmain 矩形范围内且没有悬浮在 paperRight 上，放大元素
                 viewmain.style.transform = 'scale(1.05)';
+                if (ViewHover === true) {
+                    scrollaudio.play();
+                    ViewHover = false;
+                }
             } else {
-                // 鼠标移出矩形范围，恢复元素大小
+                // 鼠标移出矩形范围或悬浮在 paperRight 上，恢复元素大小
                 viewmain.style.transform = 'scale(1.0)';
+                ViewHover = true;
             }
 
             // 为元素添加平滑过渡效果

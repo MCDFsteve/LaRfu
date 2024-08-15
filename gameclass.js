@@ -449,14 +449,14 @@ class Danmaku {
             else if (this.x < canvas.width / 2) {
                 if (this.road === 1 || this.road === 3 || this.road === 5 || this.road === 7) {
                     if (this.isLong) {
-                        particles.push(new AnimatedRectangle(rectX, rectangleY + 5, rectWidth, 'rgba(255, 230, 121, 0.5)', splashHeight, animationDuration));
+                        particles.push(new AnimatedRectangle(rectX, rectangleY + 5, rectWidth, 'rgba(255, 146, 121, 0.5)', splashHeight, animationDuration));
 
                     } else {
                         particles.push(new AnimatedRectangle(rectX, rectangleY + 5, rectWidth, 'rgba(255, 121, 121, 0.5)', splashHeight, animationDuration));
                     }
                 } else {
                     if (this.isLong) {
-                        particles.push(new AnimatedRectangle(rectX, rectangleY + 5, rectWidth, 'rgba(218, 197, 104, 0.5)', splashHeight, animationDuration));
+                        particles.push(new AnimatedRectangle(rectX, rectangleY + 5, rectWidth, 'rgba(218, 128, 104, 0.5)', splashHeight, animationDuration));
 
                     } else {
                         particles.push(new AnimatedRectangle(rectX, rectangleY + 5, rectWidth, 'rgba(192, 91, 91, 0.5)', splashHeight, animationDuration));

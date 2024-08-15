@@ -92,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
         progressBar.style.width = `${(audioPlayer.currentTime / audioPlayer.duration) * 100}%`;
         timeDisplay.textContent = formatTime(audioPlayer.currentTime);
     });
+    
 });
 function formatTime(currentTime) {
     const minutes = Math.floor(currentTime / 60);

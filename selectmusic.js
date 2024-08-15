@@ -8,10 +8,31 @@ let startMusicPath;
 let startJsonPath;
 let startMusicIcon;
 let audio = new Audio();
+let Cutaudio = new Audio();
+let CutaudioOff = new Audio();
+let listaudio = new Audio();
+let scrollaudio = new Audio();
+listaudio.src = 'sources/sound/listaudio.mp3';
+scrollaudio.src = 'sources/sound/bar.mp3';
+Cutaudio.src = 'sources/sound/quick.wav';
+CutaudioOff.src = 'sources/sound/quick_off.wav';
 document.addEventListener('DOMContentLoaded', () => {
     console.log('I\'m lain.');
     console.log("Music directory:", musicDir);
-
+    const paperLeft = document.getElementById('paperLeft');
+    const paperRight = document.getElementById('paperRight');
+    paperLeft.addEventListener('mouseover', () => {
+        Cutaudio.play();
+    });
+    paperRight.addEventListener('mouseover', () => {
+        Cutaudio.play();
+    });
+    paperLeft.addEventListener('mouseout', () => {
+        CutaudioOff.play();
+    });
+    paperRight.addEventListener('mouseout', () => {
+        CutaudioOff.play();
+    });
     fs.readdir(musicDir, (err, folders) => {
         console.log("Folders found:", folders);
 
@@ -116,7 +137,19 @@ console.log = function (...args) {
     ipcRenderer.send('log-message', args.map(arg => (typeof arg === 'object' ? JSON.stringify(arg) : arg)).join(' '));
     originalLog.apply(console, args);
 };
+function getScoreData(number) {
+    return new Promise((resolve, reject) => {
+        ipcRenderer.send('get-score', number);
 
+        ipcRenderer.once('get-score-reply', (event, response) => {
+            if (response.success) {
+                resolve(response.data);
+            } else {
+                reject(response.error);
+            }
+        });
+    });
+}
 function createListItem(folder, musicName, musicLevel, musicNumber, iconFilePath, defaultIconPath) {
     const listItem = document.createElement('div');
     listItem.classList.add('list-item');
@@ -142,14 +175,16 @@ function createListItem(folder, musicName, musicLevel, musicNumber, iconFilePath
 
     const list = document.querySelector('.list');
     list.appendChild(listItem);
-
     listItem.addEventListener('click', () => {
         selectFolder(folder, iconFilePath, defaultIconPath);
         // 移除所有其他列表项的选中状态
         document.querySelectorAll('.list-item').forEach(item => item.classList.remove('selected'));
-
+        listaudio.play();
         // 为当前选中的列表项添加选中状态
         listItem.classList.add('selected');
+    });
+    listItem.addEventListener('wheel', () => {
+        scrollaudio.play();
     });
     // 添加双击事件
     listItem.addEventListener('dblclick', () => {
@@ -162,7 +197,6 @@ function createListItem(folder, musicName, musicLevel, musicNumber, iconFilePath
         listItem.classList.add('selected');
     });
 }
-
 function selectFolder(folder, iconFilePath, defaultIconPath) {
     const musicPath = path.join(musicDir, folder, `${folder}.mp4`);
     const jsonFilePath = path.join(musicDir, folder, `${folder}.json`);
@@ -170,6 +204,7 @@ function selectFolder(folder, iconFilePath, defaultIconPath) {
     audio.loop = true;
     audio.src = musicPath; // 设置音频路径
     audio.play();
+
     fs.access(iconFilePath, fs.constants.F_OK, (err) => {
         if (err) {
             iconFilePath = defaultIconPath; // 如果没有找到 icon.png，使用默认图标路径
@@ -186,7 +221,7 @@ function selectFolder(folder, iconFilePath, defaultIconPath) {
         startMusicIcon = iconFilePath;
 
         // 读取JSON文件并更新简介信息
-        fs.readFile(jsonFilePath, 'utf-8', (err, data) => {
+        fs.readFile(jsonFilePath, 'utf-8', async (err, data) => {
             if (err) {
                 console.error(`读取 ${jsonFilePath} 出错:`, err);
                 return;
@@ -194,8 +229,19 @@ function selectFolder(folder, iconFilePath, defaultIconPath) {
 
             try {
                 const jsonData = JSON.parse(data);
+                const Number = jsonData.number || '#0';
+                let bestScore = jsonData.bestScore || '0';
                 const musicName = jsonData.music || folder;
-                const bestScore = jsonData.bestScore || '0000000';
+
+                // 获取全局的分数数据
+                try {
+                    const scoreData = await getScoreData(Number);
+                    if (scoreData.number === Number) {
+                        bestScore = scoreData.score; // 如果number匹配，则使用获取到的分数
+                    }
+                } catch (error) {
+                    console.error('Failed to retrieve score data:', error);
+                }
 
                 scorea.innerHTML = `<span class="score2">Best Score </span><br>${bestScore}`;
                 //songtitlea.querySelector('.score4').textContent = musicName;
@@ -210,7 +256,6 @@ function selectFolder(folder, iconFilePath, defaultIconPath) {
         });
     });
 }
-
 // 监听右边图片的点击事件
 document.getElementById('right-center').addEventListener('click', () => {
     console.log('folder-selected:', startMusicPath, startJsonPath, startMusicIcon);

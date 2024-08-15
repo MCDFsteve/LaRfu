@@ -6,7 +6,8 @@ const { ipcRenderer } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
-const filePath = path.join(os.homedir(), 'Downloads', 'LaRfu', 'paths.json');
+// 初始化时获取并设置 paths.json 的路径
+let filePath;
 const originalLog = console.log; // 保存原始的console.log函数，以便还可以在渲染器中本地打印日志
 //const jsonFilePath2 = path.join('./codes/破碎的苹果.json'); // 确保路径正确
 const audioPlayer = document.getElementById('audioPlayer');
@@ -18,6 +19,7 @@ const leftKeys = new Set(['KeyA', 'KeyS', 'KeyD', 'KeyF', 'KeyZ', 'KeyX', 'KeyC'
 const rightKeys = new Set(['KeyK', 'KeyL', 'Semicolon', 'Quote', 'KeyN', 'KeyM', 'Comma', 'Period', 'IntlRo', 'Slash']);
 const keyManager = new KeyManager();
 let musicTitle;
+let number;
 let buffer;
 let bufferLong;
 let longSoundSource = null;
@@ -111,7 +113,9 @@ document.addEventListener('mouseup', function (event) {
         keytop(action);
     }
 });
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    filePath = await getPathsJsonPath();
+    console.log('文件路径：',filePath);
     fs.readFile(filePath, 'utf-8', (err, data) => {
         if (err) {
             console.error('Failed to load paths:', err);
