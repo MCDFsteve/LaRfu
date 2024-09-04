@@ -11,6 +11,10 @@ let mainWindow;
 const userDataPath = app.getPath('userData');
 const filePath = path.join(userDataPath, 'paths.json');
 const scoreFilePath = path.join(userDataPath, 'score.json');
+ipcMain.handle('get-app-directory', (event) => {
+    // 获取应用程序的用户数据目录
+    return path.join(userDataPath, 'starredItems.json');
+});
 ipcMain.on('save-score', (event, { score, number }) => {
     fs.readFile(scoreFilePath, 'utf-8', (err, data) => {
         let existingScores = [];

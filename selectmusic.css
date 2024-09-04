@@ -9,7 +9,22 @@ body {
     overflow: hidden;
     user-select: none;
 }
-
+#star-button {
+    width: calc(1vw + 0.5vh);
+    height: calc(1vw + 0.5vh);
+    border: 0.3vw solid black; /* 设置2px的黑色描边 */
+    background-color: white; /* 设置按钮的背景色为白色，或根据需求调整 */
+    display: inline-block; /* 保持块级元素行为，但可以与其他元素在一行 */
+    cursor: pointer; /* 鼠标悬停时显示指针 */
+    position: absolute;
+    right:1vw;
+    bottom:1vw;
+    box-shadow: calc(0.2vw + 0.2vh) calc(0.2vw + 0.2vh) 0px 0px #395aff;
+}
+#star-button:active,#star-button.starred{
+    border: 0.3vw solid #dc4f76; /* 设置2px的黑色描边 */
+    background-color: #dc4f76; /* 设置按钮的背景色为白色，或根据需求调整 */
+}
 #songid {
     color: #7e7e7e;
 }
@@ -27,9 +42,26 @@ body {
     background-color: #00000000;
     padding: calc(0.5vw + 5vh);
     box-sizing: border-box;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index:1;
+}
+/* 滚动条的整体宽度 */
+.list::-webkit-scrollbar {
+    width: calc(0.5vw + 0.5vh); /* 你可以根据需要调整宽度 */
 }
 
+/* 滚动条的滑块部分 */
+.list::-webkit-scrollbar-thumb {
+    background-color: #dc4f76; /* 设置滚动条的颜色为红色 */
+    border-radius: 0px; /* 设置滚动条为矩形 */
+    opacity: 1; /* 初始状态下透明度为0 */
+    transition: opacity 0.1s; /* 透明度变化时的过渡效果 */
+}
+/* 滚动条的轨道（背景）部分 */
+.list::-webkit-scrollbar-track {
+    background-color: transparent; /* 设置轨道背景色为透明 */
+}
 .list-item {
     background-color: #ffffff;
     margin-bottom: 1vw;
@@ -37,7 +69,6 @@ body {
     display: flex;
     align-items: center;
     position: relative;
-    z-index: 0;
     border-bottom: 1.5vw solid #dc4f76;
     border-right: 1.5vw solid #395aff;
     transform-origin: right center;
@@ -229,11 +260,24 @@ body {
     bottom: 0;
     left: 57.5%;
     width: 3vh;
+    z-index:0;
     background-color: rgb(255, 255, 255);
     transform: translateX(-50%);
     box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.3);
 }
-
+.center-line2 {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 57.5%;
+    width: 3vh;
+    z-index:2;
+    opacity: 1;
+    transition: opacity 0.2s;
+    background-color: rgb(255, 255, 255);
+    transform: translateX(-50%);
+    box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.3);
+}
 #back {
     position: absolute;
     top: 0;
@@ -245,7 +289,10 @@ body {
     background-position: center;
     background-repeat: no-repeat;
 }
-
+#back {
+    transition: opacity 0.1s ease-in-out; /* 设置渐变效果 */
+    opacity: 1; /* 初始不透明度 */
+}
 #black {
     position: fixed;
     top: 0;
@@ -274,6 +321,7 @@ body {
     scale: 1;
     box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.5);
 }
+
 .rectangle:hover {
     animation: moveAndBounce 0.2s ease-in-out forwards;
     top: -10vw;
@@ -308,40 +356,40 @@ body {
 @keyframes moveAndBounce {
     0% {
         top: calc(-38vw + 5vw);
-    left: calc(-38vw - 5vw);
+        left: calc(-38vw - 5vw);
     }
 
     50% {
         top: calc(-38vw + 5vw + 6vw);
-    left: calc(-38vw - 5vw + 6vw);
+        left: calc(-38vw - 5vw + 6vw);
     }
 
     70% {
         top: calc(-38vw + 5vw + 4vw);
-    left: calc(-38vw - 5vw + 4vw);
+        left: calc(-38vw - 5vw + 4vw);
     }
 
     100% {
         top: calc(-38vw + 5vw + 5vw);
-    left: calc(-38vw - 5vw + 5vw);
+        left: calc(-38vw - 5vw + 5vw);
     }
 }
 
 @keyframes moveAndBounce2 {
     0% {
         top: calc(-38vw + 5vw + 5vw);
-    left: calc(-38vw - 5vw + 5vw);
-        
+        left: calc(-38vw - 5vw + 5vw);
+
     }
 
     50% {
         top: calc(-38vw + 5vw + 1vw);
-    left: calc(-38vw - 5vw + 1vw);
+        left: calc(-38vw - 5vw + 1vw);
     }
 
     70% {
         top: calc(-38vw + 5vw - 1vw);
-    left: calc(-38vw - 5vw - 1vw);
+        left: calc(-38vw - 5vw - 1vw);
     }
 
     100% {
@@ -364,9 +412,30 @@ body {
     z-index: 5;
 }
 
+.triangle {
+    position: absolute;
+    width: 0;
+    height: 0;
+    transform: rotate(75deg);
+    border-left: calc(7vw / 1.5) solid transparent;
+    border-right: calc(7vw / 1.5) solid transparent;
+    border-bottom: calc(12.12vw / 1.5) solid black;
+    top: 80%;
+    left: 55%;
+    z-index: 10;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+    /* 添加过渡效果 */
+}
+
+/* 悬停时放大 */
+.triangle:hover {
+    transform: rotate(75deg) scale(1.1);
+}
+
 .rectangle2:hover {
     animation: moveAndBounce3 0.2s ease-in-out forwards;
-    bottom: calc(-55vw + 15vw );
+    bottom: calc(-55vw + 15vw);
     right: calc(-55vw - 15vw + 22vw);
 }
 
@@ -397,43 +466,93 @@ body {
 @keyframes moveAndBounce3 {
     0% {
         bottom: calc(-55vw + 15vw);
-    right: calc(-55vw - 15vw);
+        right: calc(-55vw - 15vw);
     }
 
     50% {
-        bottom: calc(-55vw + 16vw );
-    right: calc(-55vw - 15vw + 23vw);
+        bottom: calc(-55vw + 16vw);
+        right: calc(-55vw - 15vw + 23vw);
     }
 
     70% {
-        bottom: calc(-55vw + 14vw );
-    right: calc(-55vw - 15vw + 21vw);
+        bottom: calc(-55vw + 14vw);
+        right: calc(-55vw - 15vw + 21vw);
     }
 
     100% {
-        bottom: calc(-55vw + 15vw );
-    right: calc(-55vw - 15vw + 22vw);
+        bottom: calc(-55vw + 15vw);
+        right: calc(-55vw - 15vw + 22vw);
     }
 }
 
 @keyframes moveAndBounce4 {
     0% {
-        bottom: calc(-55vw + 15vw );
-    right: calc(-55vw - 15vw + 22vw);
+        bottom: calc(-55vw + 15vw);
+        right: calc(-55vw - 15vw + 22vw);
     }
 
     50% {
         bottom: calc(-55vw + 15vw - 1vw);
-    right: calc(-55vw - 15vw - 1vw);
+        right: calc(-55vw - 15vw - 1vw);
     }
 
     70% {
         bottom: calc(-55vw + 15vw + 1vw);
-    right: calc(-55vw - 15vw + 1vw);
+        right: calc(-55vw - 15vw + 1vw);
     }
 
     100% {
         bottom: calc(-55vw + 15vw);
-    right: calc(-55vw - 15vw);
+        right: calc(-55vw - 15vw);
+    }
+}
+#viewmain {
+    transition: opacity 0.5s ease-in-out; /* 设置渐变效果 */
+    opacity: 1; /* 初始不透明度 */
+}
+.audio-bars {
+    position: absolute;
+    scale:0.5;
+    bottom: 0%;
+    left: 69%;
+    transform: translateX(-50%) rotate(225deg);
+    /* 旋转整个音浪容器 */
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 10vw;
+    /* 缩小容器宽度以减少间隔 */
+    height: 10vw;
+}
+
+.bar {
+    width: 2.5vw;
+    /* 缩小矩形宽度 */
+    background-color: black;
+    animation: bounce 1s infinite ease-in-out;
+    transform-origin: bottom;
+}
+
+.bar:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.bar:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.bar:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        height: 2vw;
+    }
+
+    50% {
+        height: 8vw;
     }
 }

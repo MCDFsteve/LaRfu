@@ -27,11 +27,18 @@
             </div>
         </div>
         <div class="center-line"></div>
+        <div class="center-line2"></div>
         <div class="rectangle" id="paperLeft">
             <div class="left-border"></div>
             <div class="right-border"></div>
         </div>
         <div class="rectangle2" id="paperRight">
+            <div class="triangle" id="triangle-play"></div>
+            <div class="audio-bars">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
             <div class="left-border2"></div>
             <div class="right-border2"></div>
         </div>
@@ -195,7 +202,18 @@
             // 生成一个介于30%到70%之间的随机宽度
             return Math.random() * 50 + 50;
         }
+        function randomHeight() {
+            return Math.floor(Math.random() * 8) + 2; // 随机生成2-8vw的高度
+        }
 
+        function animateBars() {
+            const bars = document.querySelectorAll('.bar');
+            bars.forEach(bar => {
+                bar.style.height = `${randomHeight()}vw`;
+            });
+        }
+
+        setInterval(animateBars, 500); // 每500ms更新一次
         function animateJellyEffect() {
             const leftBorder = document.querySelector('.left-border');
             const leftBorder2 = document.querySelector('.left-border2');
