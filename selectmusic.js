@@ -11,8 +11,13 @@ let Cutaudio = new Audio();
 let CutaudioOff = new Audio();
 let listaudio = new Audio();
 let scrollaudio = new Audio();
+let staraudio = new Audio();
 let starredItemsFilePath;
 let folderInfoList = []; // 全局变量
+const windowWidth = window.innerWidth;
+const windowHeight = window.innerHeight;
+// 计算窗口宽高比
+const windowAspectRatio = windowWidth / windowHeight;
 // 获取应用程序的目录路径
 ipcRenderer.invoke('get-app-directory').then((result) => {
     starredItemsFilePath = result;
@@ -24,13 +29,17 @@ ipcRenderer.invoke('get-app-directory').then((result) => {
 listaudio.src = 'sources/sound/listaudio.mp3';
 scrollaudio.src = 'sources/sound/bar.mp3';
 Cutaudio.src = 'sources/sound/quick.wav';
+Cutaudio.volume = 0.5;
+CutaudioOff.volume = 0.5;
 CutaudioOff.src = 'sources/sound/quick_off.wav';
+staraudio.src = 'sources/sound/star.mp3';
 document.addEventListener('DOMContentLoaded', () => {
     console.log('I\'m lain.');
     console.log("Music directory:", musicDir);
+    WhiteCenter();
     const listElement = document.querySelector('.list');
     const centerLine2 = document.querySelector('.center-line2'); // 滚动条控件或需要处理透明度的控件
-
+    animateColorChange();
     // 监听滚动事件并改变透明度
     listElement.addEventListener('scroll', () => {
         centerLine2.style.opacity = 0; // 开始滚动时隐藏控件
@@ -39,7 +48,25 @@ document.addEventListener('DOMContentLoaded', () => {
         // 在停止滚动 200ms 后恢复透明度
         listElement.hideScrollbarTimeout = setTimeout(() => {
             centerLine2.style.opacity = 1; // 停止滚动后恢复控件透明度
-        }, 200);  
+        }, 200);
+    });
+    // 监听 paperLeft 和 paperRight 元素的鼠标悬停和移出事件
+    const paperLeft = document.getElementById('paperLeft');
+    const paperRight = document.getElementById('paperRight');
+    paperLeft.addEventListener('mouseover', () => {
+        Cutaudio.play(); // 鼠标悬停时播放音效
+    });
+
+    paperRight.addEventListener('mouseover', () => {
+        Cutaudio.play(); // 鼠标悬停时播放音效
+    });
+
+    paperLeft.addEventListener('mouseout', () => {
+        CutaudioOff.play(); // 鼠标移出时播放音效
+    });
+
+    paperRight.addEventListener('mouseout', () => {
+        CutaudioOff.play(); // 鼠标移出时播放音效
     });
     // 读取音乐目录
     fs.readdir(musicDir, (err, folders) => {
@@ -100,6 +127,87 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+function animateColorChange() {
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const textElement = document.getElementById('percentageA2');
+    const fps = 60;  // 设置帧率为 60FPS
+    let lastTime = 0;
+    const interval = 1000 / fps;  // 每帧的间隔时间，单位为毫秒
+    let isPaused = false;  // 控制动画是否暂停
+
+    // 创建形状对象
+    function createShape(x, y, size, color) {
+        return {
+            x: x,
+            y: y,
+            size: size,  // 使用 size 作为圆的直径
+            color: color,
+            speedX: Math.random() * 4 - 2,  // 减小速度范围以平滑运动
+            speedY: Math.random() * 4 - 2,  // 减小速度范围
+        };
+    }
+
+    // 创建多个圆形
+    let shapes = [
+        createShape(350, 250, 300, '#FF1493'),
+        createShape(400, 100, 350, '#FFD700'),
+        createShape(150, 150, 350, '#00FF7F'),
+        createShape(300, 250, 300, '#1E90FF')
+    ];
+
+    // 绘制圆形的函数
+    function drawShape(shape) {
+        ctx.beginPath();
+        ctx.arc(shape.x, shape.y, shape.size / 2, 0, Math.PI * 2);  // 圆形
+        ctx.fillStyle = shape.color;
+        ctx.fill();
+        ctx.closePath();
+    }
+
+    // 更新形状状态（位置）
+    function updateShape(shape, deltaTime) {
+        shape.x += shape.speedX * (deltaTime / 16.67);  // 16.67ms 为标准帧间隔
+        shape.y += shape.speedY * (deltaTime / 16.67);
+
+        // 边界碰撞检测，防止圆跑出 Canvas 区域
+        if (shape.x + shape.size / 2 > canvas.width || shape.x - shape.size / 2 < 0) shape.speedX *= -1;
+        if (shape.y + shape.size / 2 > canvas.height || shape.y - shape.size / 2 < 0) shape.speedY *= -1;
+    }
+
+    // 动画帧函数，控制每秒 60 帧，并基于时间差插值运动
+    function animate(time) {
+        if (!isPaused) {  // 如果没有暂停
+            const deltaTime = time - lastTime;
+            if (deltaTime >= interval) {
+                lastTime = time;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);  // 清空画布
+                shapes.forEach(shape => {
+                    updateShape(shape, deltaTime);
+                    drawShape(shape);
+                });
+
+                // 将 Canvas 渲染的内容作为背景图
+                textElement.style.backgroundImage = `url(${canvas.toDataURL()})`;
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    // 启动动画
+    requestAnimationFrame(animate);
+
+    // 监听窗口最小化和恢复
+    window.addEventListener('blur', () => {
+        isPaused = true;  // 当窗口失去焦点时暂停动画
+    });
+
+    window.addEventListener('focus', () => {
+        isPaused = false;  // 当窗口恢复焦点时继续动画
+        lastTime = performance.now();  // 重置 lastTime，避免时间跳跃
+    });
+}
 function getStarredItems() {
     if (fs.existsSync(starredItemsFilePath)) {
         try {
@@ -117,6 +225,7 @@ function saveStarredItems(starredItems) {
     fs.writeFileSync(starredItemsFilePath, JSON.stringify(starredItems, null, 2), 'utf-8');
 }
 function backSwitch(iconFilePath, defaultIconPath) {
+    //console.log('iconFilePath:',iconFilePath);
     // 检查文件是否存在
     fs.access(iconFilePath, fs.constants.F_OK, (err) => {
         if (err) {
@@ -174,8 +283,6 @@ function createListItem(folder, musicName, musicLevel, musicNumber, iconFilePath
         img.alt = musicName;
     });
 
-    backSwitch(iconFilePath, defaultIconPath);
-
     const details = document.createElement('div');
     details.classList.add('details');
 
@@ -202,9 +309,13 @@ function createListItem(folder, musicName, musicLevel, musicNumber, iconFilePath
         selectFolder(folder, iconFilePath, defaultIconPath);
         // 移除所有其他列表项的选中状态
         document.querySelectorAll('.list-item').forEach(item => item.classList.remove('selected'));
-        listaudio.play();
+        staraudio.play();
+        lastSelectedNumber = musicNumber;
+        // 通过 IPC 通知主进程更新 last-music.json 文件
+        ipcRenderer.send('update-last-selected-number', { number: lastSelectedNumber });
         // 为当前选中的列表项添加选中状态
         listItem.classList.add('selected');
+        backSwitch(iconFilePath, defaultIconPath);
     });
 
     listItem.addEventListener('wheel', () => {
@@ -223,9 +334,43 @@ function createListItem(folder, musicName, musicLevel, musicNumber, iconFilePath
 
     // 处理 star-button 点击事件，更新 Star 状态并重新排序
     listItem.querySelector('#star-button').addEventListener('click', (event) => {
+        staraudio.play();
         event.stopPropagation(); // 阻止点击传播到父元素
         updateStarStatus(musicNumber); // 更新 Star 状态
+        // 设置 lastSelectedNumber 为当前项的 number
+        lastSelectedNumber = musicNumber;
+        backSwitch(iconFilePath, defaultIconPath);
+        // 通过 IPC 通知主进程更新 last-music.json 文件
+        ipcRenderer.send('update-last-selected-number', { number: lastSelectedNumber });
     });
+}
+function WhiteCenter() {
+    console.log('WhiteCenter');
+    // 获取 .list 和 .center-line 元素
+    const listElement = document.querySelector('.list');
+    const centerLineElement = document.querySelector('.center-line');
+    const centerLineElement2 = document.querySelector('.center-line2');
+
+    // 获取 .list 的边界信息
+    const listRect = listElement.getBoundingClientRect();
+    const listRightX = listRect.right; // 获取 .list 元素的右侧坐标
+
+    // 计算滚动条宽度（calc(0.4vw + 0.8vh)）
+    const scrollbarWidth = window.innerWidth * 0.004 + window.innerHeight * 0.008; // 0.4vw + 0.8vh
+
+    // 计算滚动条的中心 X 坐标
+    const scrollbarCenterX = listRightX - scrollbarWidth / 2;
+
+    // 获取 .center-line 的宽度
+    const centerLineWidth = window.innerHeight * 0.03; // 3vh
+
+    // 计算 .center-line 的中心 X 坐标，使其与滚动条的中心对齐
+    const centerLineX = scrollbarCenterX - centerLineWidth / 2;
+
+    // 设置 .center-line 的位置
+    centerLineElement.style.position = 'absolute'; // 确保 .center-line 是绝对定位
+    centerLineElement.style.left = `${centerLineX}px`;
+    centerLineElement2.style.left = `${centerLineX}px`;
 }
 function selectFolder(folder, iconFilePath, defaultIconPath) {
     const musicPath = path.join(musicDir, folder, `${folder}.mp4`);
@@ -243,6 +388,8 @@ function selectFolder(folder, iconFilePath, defaultIconPath) {
         // 更新右边的图片和简介
         const viewmain = document.getElementById('viewmain');
         const scorea = document.getElementById('scorea');
+        const percentageA = document.getElementById('percentageA');
+        const percentageA2 = document.getElementById('percentageA2');
         const songtitlea = document.getElementById('songtitlea');
 
         viewmain.src = iconFilePath;
@@ -261,6 +408,7 @@ function selectFolder(folder, iconFilePath, defaultIconPath) {
                 const jsonData = JSON.parse(data);
                 const Number = jsonData.number || '#0';
                 let bestScore = jsonData.bestScore || '0';
+                let bestpercentage = jsonData.bestpercentage !== undefined ? jsonData.bestpercentage : '0';
                 const musicName = jsonData.music || folder;
 
                 // 获取全局的分数数据
@@ -268,12 +416,52 @@ function selectFolder(folder, iconFilePath, defaultIconPath) {
                     const scoreData = await getScoreData(Number);
                     if (scoreData.number === Number) {
                         bestScore = scoreData.score; // 如果number匹配，则使用获取到的分数
+                        bestpercentage = scoreData.percentage !== undefined ? scoreData.percentage : '0';//如果number匹配，则使用获取到的百分比
                     }
                 } catch (error) {
                     console.error('Failed to retrieve score data:', error);
                 }
 
                 scorea.innerHTML = `<span class="score2">Best Score </span><br>${bestScore}`;
+                percentageA.innerHTML = `${bestpercentage}%`;
+                percentageA2.innerHTML = `${bestpercentage}%`;
+                // 获取 .score2 元素的边界并设置 percentageA 的位置
+                const score2Element = document.querySelector('.score2');
+                const score2Rect = score2Element.getBoundingClientRect();
+                const score2RightX = score2Rect.right;
+                const score2TopY = score2Rect.top;
+                const score2LeftX = score2Rect.left;
+                const score2BottomY = score2Rect.bottom;
+
+                // 获取窗口的宽度和高度
+
+                // 设置初始的 percentageA 和 percentageA2 位置
+                percentageA.style.left = `calc(${score2RightX}px + 1vh)`;
+                percentageA.style.top = `${score2TopY}px`;
+                percentageA2.style.left = `calc(${score2RightX}px + 1vh)`;
+                percentageA2.style.top = `${score2TopY}px`;
+                // 如果窗口宽高比接近 4:3，则使用条件方案调整位置
+                // 4:3 的宽高比大约为 1.33，可以定义一个范围（例如 1.25 到 1.35 之间）
+                if (windowAspectRatio > 1.25 && windowAspectRatio < 1.45) {
+                    // 如果超出了窗口宽度，设置 percentageA 和 percentageA2 的位置
+                    percentageA.style.left = `${score2LeftX}px`;
+                    percentageA.style.top = `calc(${score2BottomY}px + 4vh)`;
+
+                    percentageA2.style.left = `${score2LeftX}px`;
+                    percentageA2.style.top = `calc(${score2BottomY}px + 4vh)`;
+                } else {
+                    // 处理其他宽高比的情况（比如 16:9 或更宽的窗口）
+                    const percentageARect = percentageA.getBoundingClientRect();
+
+                    // 如果超出窗口宽度，也需要调整位置
+                    if (percentageARect.right > windowWidth) {
+                        percentageA.style.left = `${score2LeftX}px`;
+                        percentageA.style.top = `calc(${score2BottomY}px + 4vh)`;
+
+                        percentageA2.style.left = `${score2LeftX}px`;
+                        percentageA2.style.top = `calc(${score2BottomY}px + 4vh)`;
+                    }
+                }
                 //songtitlea.querySelector('.score4').textContent = musicName;
                 //applyScrollAnimation();
 
@@ -305,11 +493,28 @@ function updateStarStatus(number) {
     updateListOrder(folderInfoList);
 }
 // 在读取完所有文件夹后，生成列表项并排序
-function updateListOrder(folderInfoList) {
+function getLastMusicNumber() {
+    return new Promise((resolve) => {
+        ipcRenderer.once('get-last-music-number-reply', (event, { success, number }) => {
+            if (success && number) {
+                resolve(number);
+            } else {
+                resolve(null); // 如果没有持久化的 number，则返回 null
+            }
+        });
+
+        ipcRenderer.send('get-last-music-number');
+    });
+}
+
+async function updateListOrder(folderInfoList) {
     const list = document.querySelector('.list');
     list.innerHTML = ''; // 清空列表
 
     const starredItems = getStarredItems(); // 获取被 Star 的项
+    let lastSelectedNumber = await getLastMusicNumber(); // 等待获取持久化的 lastNumber
+
+    //console.log('lastSelectedNumber:', lastSelectedNumber);
 
     // 对列表进行排序
     folderInfoList.sort((a, b) => {
@@ -319,20 +524,30 @@ function updateListOrder(folderInfoList) {
         // 被 Star 的项排在前面，按 musicNumber 排序
         if (aStarred && !bStarred) return -1;
         if (!aStarred && bStarred) return 1;
-        
+
         // 如果都没有 Star 或者都已 Star，按 musicNumber 排序
         return a.musicNumber.localeCompare(b.musicNumber);
     });
 
     // 重新生成列表项并默认选择第一个
     folderInfoList.forEach((info, i) => {
+        //console.log('看看我有几个');
         createListItem(info.folder, info.musicName, info.musicLevel, info.musicNumber, info.iconFilePath, info.defaultIconPath);
 
-        // 默认选择第一个项目
-        if (i === 0) {
-            const listItem = document.querySelector('.list-item');
-            listItem.classList.add('selected');  // 为第一个项目添加选中状态
-            selectFolder(info.folder, info.iconFilePath, info.defaultIconPath);  // 更新右侧视图
+        if (lastSelectedNumber && info.musicNumber === lastSelectedNumber) {
+            // 选择持久化的 lastNumber 对应的项目
+            const listItem = document.querySelector('.list-item:last-child');
+            listItem.classList.add('selected');
+            backSwitch(info.iconFilePath, info.defaultIconPath);
+            selectFolder(info.folder, info.iconFilePath, info.defaultIconPath);
+            // 滚动到该 list-item
+            listItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else if (i === 0 && !lastSelectedNumber) {
+            // 如果没有持久化的 lastNumber，选择第一个项目
+            const listItem = document.querySelector('.list-item:last-child');
+            backSwitch(info.iconFilePath, info.defaultIconPath);
+            listItem.classList.add('selected');
+            selectFolder(info.folder, info.iconFilePath, info.defaultIconPath);
         }
     });
 }
@@ -340,7 +555,6 @@ document.addEventListener('click', (event) => {
     if (event.target.id === 'star-button' || event.target.closest('#star-button')) {
         const listItem = event.target.closest('.list-item');
         const number = listItem.querySelector('#songid').textContent; // 获取当前的number
-
         updateStarStatus(number); // 更新 Star 状态并重新排序
     }
 });

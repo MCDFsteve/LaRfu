@@ -9,22 +9,39 @@ body {
     overflow: hidden;
     user-select: none;
 }
+
+#container {
+    position: absolute;
+    /* 使 container 绝对定位 */
+    z-index: 10;
+    /* 比 percentageA 元素层级低，确保文字不被覆盖 */
+}
+
 #star-button {
     width: calc(1vw + 0.5vh);
     height: calc(1vw + 0.5vh);
-    border: 0.3vw solid black; /* 设置2px的黑色描边 */
-    background-color: white; /* 设置按钮的背景色为白色，或根据需求调整 */
-    display: inline-block; /* 保持块级元素行为，但可以与其他元素在一行 */
-    cursor: pointer; /* 鼠标悬停时显示指针 */
+    border: 0.3vw solid black;
+    /* 设置2px的黑色描边 */
+    background-color: white;
+    /* 设置按钮的背景色为白色，或根据需求调整 */
+    display: inline-block;
+    /* 保持块级元素行为，但可以与其他元素在一行 */
+    cursor: pointer;
+    /* 鼠标悬停时显示指针 */
     position: absolute;
-    right:1vw;
-    bottom:1vw;
+    right: 1vw;
+    bottom: 1vw;
     box-shadow: calc(0.2vw + 0.2vh) calc(0.2vw + 0.2vh) 0px 0px #395aff;
 }
-#star-button:active,#star-button.starred{
-    border: 0.3vw solid #dc4f76; /* 设置2px的黑色描边 */
-    background-color: #dc4f76; /* 设置按钮的背景色为白色，或根据需求调整 */
+
+#star-button:active,
+#star-button.starred {
+    border: 0.3vw solid #dc4f76;
+    /* 设置2px的黑色描边 */
+    background-color: #dc4f76;
+    /* 设置按钮的背景色为白色，或根据需求调整 */
 }
+
 #songid {
     color: #7e7e7e;
 }
@@ -44,24 +61,33 @@ body {
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
-    z-index:1;
+    z-index: 1;
 }
+
 /* 滚动条的整体宽度 */
 .list::-webkit-scrollbar {
-    width: calc(0.5vw + 0.5vh); /* 你可以根据需要调整宽度 */
+    width: calc(0.4vw + 0.8vh);
+    /* 你可以根据需要调整宽度 */
 }
 
 /* 滚动条的滑块部分 */
 .list::-webkit-scrollbar-thumb {
-    background-color: #dc4f76; /* 设置滚动条的颜色为红色 */
-    border-radius: 0px; /* 设置滚动条为矩形 */
-    opacity: 1; /* 初始状态下透明度为0 */
-    transition: opacity 0.1s; /* 透明度变化时的过渡效果 */
+    background-color: #dc4f76;
+    /* 设置滚动条的颜色为红色 */
+    border-radius: 0px;
+    /* 设置滚动条为矩形 */
+    opacity: 1;
+    /* 初始状态下透明度为0 */
+    transition: opacity 0.1s;
+    /* 透明度变化时的过渡效果 */
 }
+
 /* 滚动条的轨道（背景）部分 */
 .list::-webkit-scrollbar-track {
-    background-color: transparent; /* 设置轨道背景色为透明 */
+    background-color: transparent;
+    /* 设置轨道背景色为透明 */
 }
+
 .list-item {
     background-color: #ffffff;
     margin-bottom: 1vw;
@@ -219,6 +245,52 @@ body {
     text-shadow: 8px 8px 12px rgba(0, 0, 0, 0.5);
 }
 
+#percentageA {
+    position: fixed;
+    font-size: 11vh;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
+    z-index: 1;
+    text-shadow: 8px 8px 12px rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+    transition: color 0.3s ease-in-out;
+    /* 添加颜色变化的过渡效果 */
+}
+#percentageA2 {
+    position: fixed;
+    font-size: 11vh;
+    z-index: 2;
+    font-weight: bold;
+    color: transparent; /* 使文字颜色透明，仅显示背景 */
+    background: url(#); /* 使用Canvas的输出 */
+    background-clip: text;
+    -webkit-background-clip: text; /* 适配Safari */
+    background-size: cover; /* 确保背景充满整个文字区域 */
+}
+/* 创建更复杂的渐变动画 */
+@keyframes coolAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    25% {
+        background-position: 50% 100%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    75% {
+        background-position: 50% 0%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 #scrollCanvas {
     width: 100%;
     /* 宽度设为父元素宽度的100% */
@@ -258,26 +330,23 @@ body {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 57.5%;
     width: 3vh;
-    z-index:0;
+    z-index: 0;
     background-color: rgb(255, 255, 255);
-    transform: translateX(-50%);
     box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.3);
 }
+
 .center-line2 {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 57.5%;
     width: 3vh;
-    z-index:2;
+    z-index: 2;
     opacity: 1;
     transition: opacity 0.2s;
     background-color: rgb(255, 255, 255);
-    transform: translateX(-50%);
-    box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.3);
 }
+
 #back {
     position: absolute;
     top: 0;
@@ -289,10 +358,14 @@ body {
     background-position: center;
     background-repeat: no-repeat;
 }
+
 #back {
-    transition: opacity 0.1s ease-in-out; /* 设置渐变效果 */
-    opacity: 1; /* 初始不透明度 */
+    transition: opacity 0.1s ease-in-out;
+    /* 设置渐变效果 */
+    opacity: 1;
+    /* 初始不透明度 */
 }
+
 #black {
     position: fixed;
     top: 0;
@@ -506,13 +579,17 @@ body {
         right: calc(-55vw - 15vw);
     }
 }
+
 #viewmain {
-    transition: opacity 0.5s ease-in-out; /* 设置渐变效果 */
-    opacity: 1; /* 初始不透明度 */
+    transition: opacity 0.5s ease-in-out;
+    /* 设置渐变效果 */
+    opacity: 1;
+    /* 初始不透明度 */
 }
+
 .audio-bars {
     position: absolute;
-    scale:0.5;
+    scale: 0.5;
     bottom: 0%;
     left: 69%;
     transform: translateX(-50%) rotate(225deg);

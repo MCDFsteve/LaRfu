@@ -62,7 +62,7 @@ function initializeApplication(musicPath, jsonFilePath2, iconPath) {
     });
     // 在歌曲播放结束时调用
     audioPlayer.addEventListener('ended', () => {
-        saveScoreToFile(totalScore, number);
+        saveScoreToFile(totalScore, number,percentage);
     });
     scoreDisplay = document.getElementById('scoreDisplay');
     updateScoreDisplay(); // 更新分数显示
@@ -83,9 +83,10 @@ async function getPathsJsonPath() {
     }
 }
 // 保存分数到文件的方法
-function saveScoreToFile(totalScore, number) {
+function saveScoreToFile(totalScore, number,percentage) {
+    ipcRenderer.send('last-music',{number:number});
     // 通过 ipcRenderer 向主进程发送保存分数的请求
-    ipcRenderer.send('save-score', { score: totalScore, number: number });
+    ipcRenderer.send('save-score', { score: totalScore, number: number,percentage:percentage });
 }
 function resizeNewCanvas() {
     newCanvas.width = window.innerWidth;
@@ -217,7 +218,7 @@ function updateScore(score) {
 
 function updateScoreDisplay() {
     totalScore = Math.floor(totalScore);
-    let percentage = totalCircles > 0 ? (hitCircles / totalCircles * 100).toFixed(0) : '0';
+    percentage = totalCircles > 0 ? (hitCircles / totalCircles * 100).toFixed(0) : '0';
     //scoreDisplay.textContent = `命中率: ${percentage}% (${hitCircles}/${totalCircles}) - 总分: ${totalScore}`;
     scoreDisplay.innerHTML = `<span class="totalScore">${totalScore}</span><br><span class="percentage">${percentage}%</span>`;
 }

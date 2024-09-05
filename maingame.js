@@ -41,6 +41,7 @@ let keyStates = {
     left: false,
     right: false
 };
+let percentage;
 let circles = []; // 存储弹幕的数组
 let jsonData; // 保存从 JSON 文件加载的数据
 let countdownStarted = false;

@@ -252,7 +252,7 @@ class Danmaku {
                 const maxScore = 3000;
                 showRealtimeScore(this.x, this.y, 'Great!');
                 score = maxScore - ((distanceToMax / maxDistance) * (maxScore - minScore));
-                hitCircles += 1;
+                hitCircles += 0.5;
             } else if (yPercentage >= 0.78 && yPercentage <= 0.85) {
                 // 计算离 0.8 的距离
                 let distanceToTarget = Math.abs(yPercentage - 0.8);
@@ -267,7 +267,7 @@ class Danmaku {
                     showRealtimeScore(this.x, this.y, 'Perfect!!');
                 }
                 score = maxScore - ((distanceToTarget / maxDistance) * (maxScore - minScore));
-                hitCircles += 2;
+                hitCircles += 1;
             }
         } else if (this.isStart) {
             if ((yPercentage >= 0.75 && yPercentage < 0.78) || (yPercentage > 0.85 && yPercentage < 0.9)) {

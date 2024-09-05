@@ -14,6 +14,8 @@
 <body>
     <div id="back"></div>
     <div id="black"></div>
+    <canvas id="canvas" width="600" height="400"
+        style="display: none;position: fixed; top: 0; left: 0; z-index: 2;"></canvas>
     <div class="container">
         <div class="list">
         </div>
@@ -21,6 +23,8 @@
             <img id="viewmain" src="sources/images/icon.png" alt="Selected Gun" style="pointer-events: none;">
         </div>
         <div id="scorea" class="score"><span class="score2">Best Score </span><br>1919810</div>
+        <div id="percentageA">0%</div>
+        <div id="percentageA2">0%</div>
         <div id="songtitlea" class="score">
             <div id="scrollCanvasContainer">
                 <canvas id="scrollCanvas"></canvas>
@@ -46,6 +50,7 @@
             style="height:100%;width:100%;z-index:5;background-color: #000000;position: fixed;transition: opacity 0.2s ease-in-out;pointer-events: none; ">
         </div>
     </div>
+    <script src="node_modules/animejs/lib/anime.js"></script>
     <script>
         let ViewHover = true;
         document.addEventListener('mousemove', (event) => {
@@ -113,7 +118,7 @@
             scorea.style.width = `calc(${viewmainRect.width}px)`;
             songtitlea.style.left = `calc(${viewmainRect.x}px)`;
             songtitlea.style.zIndex = 0;
-            songtitlea.style.top = `calc(${viewmainRect.top}px - 2% - 6vh)`;
+            songtitlea.style.bottom = `calc(${viewmainRect.bottom}px + 3vw + 4vh)`;
             songtitlea.style.width = `calc(${viewmainRect.width}px)`;
             //document.getElementById('scrollCanvas').style.border = '1px solid red';
         }
@@ -143,27 +148,43 @@
             let textWidth = ctx.measureText(text).width;
             let x = 0; // 文本起始位置在画布右侧
 
-            scrollText();
+            let isPaused = false;  // 控制是否暂停动画
 
             function scrollText() {
-                ctx.clearRect(0, 0, canvas.width / scale, canvas.height / scale); // 清除画布
-                ctx.fillStyle = 'white'; // 文本颜色
-                // 设置阴影属性
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.5)'; // 阴影颜色
-                ctx.shadowBlur = 12;                   // 阴影模糊半径
-                ctx.shadowOffsetX = 8;                 // 阴影的水平偏移
-                ctx.shadowOffsetY = 8;                 // 阴影的垂直偏移
-                ctx.fillText(text, x, canvas.height / (2 * scale) + fontSize / 3); // 在画布上绘制文本
-                setTimeout(() => {
-                    x -= 2; // 调整这个值来控制滚动速度
-                }, 100);
+                if (!isPaused) {  // 如果没有暂停，继续绘制
+                    ctx.clearRect(0, 0, canvas.width / scale, canvas.height / scale); // 清除画布
+                    ctx.fillStyle = 'white'; // 文本颜色
+                    // 设置阴影属性
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)'; // 阴影颜色
+                    ctx.shadowBlur = 12;                   // 阴影模糊半径
+                    ctx.shadowOffsetX = 8;                 // 阴影的水平偏移
+                    ctx.shadowOffsetY = 8;                 // 阴影的垂直偏移
+                    ctx.fillText(text, x, canvas.height / (2 * scale) + fontSize / 3); // 在画布上绘制文本
 
-                // 如果文本完全离开画布，则重置位置
-                if (x < -textWidth) {
-                    x = canvas.width / scale;
+                    // 控制文本滚动速度
+                    x -= 2; // 调整这个值来控制滚动速度
+
+                    // 如果文本完全离开画布，则重置位置
+                    if (x < -textWidth) {
+                        x = canvas.width / scale;
+                    }
                 }
-                requestAnimationFrame(scrollText); // 继续动画
+
+                // 使用 requestAnimationFrame 继续动画
+                requestAnimationFrame(scrollText);
             }
+
+            // 启动滚动文本动画
+            scrollText();
+
+            // 监听窗口最小化和恢复
+            window.addEventListener('blur', () => {
+                isPaused = true;  // 当窗口失去焦点时暂停动画
+            });
+
+            window.addEventListener('focus', () => {
+                isPaused = false;  // 当窗口恢复焦点时继续动画
+            });
         }
 
 
